@@ -1,0 +1,19 @@
+{
+    "name": "njovu/mpesa",
+    "description": "Mpesa Payment Gateway",
+    "type": "package",
+    "require": {
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Njovu\\Mpesa\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Njovu\\Mpesa\\Tests\\": "src/tests/"
+        }
+    }
+}

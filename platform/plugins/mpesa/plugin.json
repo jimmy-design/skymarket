@@ -1,0 +1,11 @@
+{
+    "id": "njovu/mpesa",
+    "name": "Mpesa Payment Gateway",
+    "namespace": "Njovu\\Mpesa\\",
+    "provider": "Njovu\\Mpesa\\Providers\\MpesaServiceProvider",
+    "author": "Njovu Team",
+    "url": "https://helper.healthyentrepreneurs.nl",
+    "version": "0.1.0",
+    "description": "Mpesa payment gateway integration",
+    "require": ["payment"]
+}
