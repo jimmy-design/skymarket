@@ -23,6 +23,16 @@ class TrackingSettingForm extends SettingForm
             ->setSectionTitle(trans('plugins/ecommerce::setting.tracking.manage_tracking'))
             ->setSectionDescription(trans('plugins/ecommerce::setting.tracking.manage_tracking_description'))
             ->setValidatorClass(TrackingSettingRequest::class)
+            ->add('tiktok_pixel_enabled', OnOffField::class, OnOffFieldOption::make()
+                ->label('Enable TikTok Pixel')
+                ->value(get_ecommerce_setting('tiktok_pixel_enabled', false))
+                ->helperText('Advertising events require visitor consent. Leave disabled until your Pixel ID is ready.')
+                ->toArray())
+            ->add('tiktok_pixel_id', TextField::class, TextFieldOption::make()
+                ->label('TikTok Pixel ID')
+                ->value(get_ecommerce_setting('tiktok_pixel_id'))
+                ->helperText('Enter the Pixel ID from TikTok Events Manager. Product catalogue feed: ' . url('feeds/tiktok-products.csv'))
+                ->toArray())
             ->addCollapsible(
                 FormCollapse::make('facebook_pixel_settings')
                     ->targetField(

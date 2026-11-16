@@ -565,6 +565,12 @@ class OrderSupportServiceProvider extends ServiceProvider
             }
         }
 
+        if (session('tracked_start_checkout') === $token) {
+            foreach ($orders as $order) {
+                app(\Botble\Ecommerce\Supports\TikTokPixel::class)->purchase($order);
+            }
+        }
+
         OrderHelper::clearSessions($token);
 
         return view('plugins/marketplace::orders.thank-you', compact('orders'));

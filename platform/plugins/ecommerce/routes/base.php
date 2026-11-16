@@ -181,6 +181,10 @@ AdminHelper::registerRoutes(function () {
 Theme::registerRoutes(function () {
     app('events')->listen(ThemeRoutingBeforeEvent::class, function () {
         Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Fronts'], function () {
+            Route::get('feeds/tiktok-products.csv', [\Botble\Ecommerce\Http\Controllers\Fronts\TikTokCatalogController::class, '__invoke'])
+                ->middleware('throttle:30,1')
+                ->name('public.tiktok.catalog');
+
             Route::get(EcommerceHelper::getPageSlug('product_listing'), [
                 'uses' => 'PublicProductController@getProducts',
                 'as' => 'public.products',

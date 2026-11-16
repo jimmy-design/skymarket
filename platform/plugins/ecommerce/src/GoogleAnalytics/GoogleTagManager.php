@@ -36,6 +36,7 @@ class GoogleTagManager
 
     public function viewItem(Product $item, array $attributes = []): self
     {
+        app(\Botble\Ecommerce\Supports\TikTokPixel::class)->viewProduct($item);
         $this->pushEvent('view_item', [$item], [
             'currency' => get_application_currency()->title,
             'value' => $item->price,
@@ -103,6 +104,7 @@ class GoogleTagManager
 
     public function beginCheckout(array $items, float $value, ?string $coupon = null, array $attributes = []): self
     {
+        app(\Botble\Ecommerce\Supports\TikTokPixel::class)->beginCheckout($value);
         $this->pushEvent('begin_checkout', $items, [
             'currency' => get_application_currency()->title,
             'value' => $value,
@@ -115,6 +117,7 @@ class GoogleTagManager
 
     public function purchase(Order $order, array $attributes = [], array $products = []): self
     {
+        app(\Botble\Ecommerce\Supports\TikTokPixel::class)->purchase($order);
         $products = $products ?: $order->getOrderProducts()->all();
 
         $this->pushEvent('purchase', $products, [

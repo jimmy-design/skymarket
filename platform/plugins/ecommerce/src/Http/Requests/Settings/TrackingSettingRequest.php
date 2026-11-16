@@ -13,6 +13,8 @@ class TrackingSettingRequest extends Request
             'facebook_pixel_enabled' => $onOffRule = new OnOffRule(),
             'facebook_pixel_id' => ['nullable', 'required_if:facebook_pixel_enabled,1', 'string', 'max:120'],
             'google_tag_manager_enabled' => $onOffRule,
+            'tiktok_pixel_enabled' => $onOffRule,
+            'tiktok_pixel_id' => ['nullable', 'required_if:tiktok_pixel_enabled,1', 'string', 'regex:/^[A-Za-z0-9_-]{5,64}$/D'],
         ];
     }
 }

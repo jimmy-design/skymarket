@@ -340,6 +340,7 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->app->singleton(ProductCrossSalePriceService::class);
 
         $this->app->singleton(GoogleTagManager::class);
+        $this->app->singleton(\Botble\Ecommerce\Supports\TikTokPixel::class);
 
         Request::macro('footprint', function () {
             return app(FootprinterInterface::class)->footprint(app()->make('request'));

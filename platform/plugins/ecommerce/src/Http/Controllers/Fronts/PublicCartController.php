@@ -172,6 +172,12 @@ class PublicCartController extends BaseController
             'content' => $cartItems,
         ];
 
+        $responseData['tiktok_event'] = app(\Botble\Ecommerce\Supports\TikTokPixel::class)->addedToCart(
+            $originalProduct,
+            (int) $request->input('qty', 1),
+            (float) $cartItem['price'] * (int) $request->input('qty', 1),
+        );
+
         app(GoogleTagManager::class)->addToCart(
             $originalProduct,
             $cartItem['qty'],

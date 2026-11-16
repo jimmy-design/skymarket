@@ -836,6 +836,10 @@ class HookServiceProvider extends ServiceProvider
 
         $this->app->make(GoogleTagManager::class)->pushScriptsToFooter();
 
+        add_filter([THEME_FRONT_FOOTER, 'ecommerce_checkout_footer'], function (?string $html) {
+            return $html . app(\Botble\Ecommerce\Supports\TikTokPixel::class)->render();
+        }, 998);
+
         add_filter('ecommerce_cart_after_item_content', function (?string $html, CartItem $item) {
             $product = Product::query()->find($item->id);
 

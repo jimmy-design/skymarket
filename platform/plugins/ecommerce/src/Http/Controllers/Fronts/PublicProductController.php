@@ -39,6 +39,7 @@ class PublicProductController extends BaseController
         $with = EcommerceHelper::withProductEagerLoadingRelations();
 
         if (($query = BaseHelper::stringify($request->input('q'))) && ! $request->ajax()) {
+            app(\Botble\Ecommerce\Supports\TikTokPixel::class)->search($query);
             $products = $productService->getProduct($request, null, null, $with);
 
             SeoHelper::setTitle(__('Search result for ":query"', compact('query')));
