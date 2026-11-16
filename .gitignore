@@ -66,3 +66,7 @@ storage/framework/maintenance.php
 /public/storage.backup-*/
 /public/info.php
 /public/test_gd.png
+
+# Python deployment tooling
+__pycache__/
+*.py[cod]

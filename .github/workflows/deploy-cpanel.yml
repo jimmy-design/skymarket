@@ -1,0 +1,44 @@
+name: Deploy SkyMarket to cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skymarket-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.CPANEL_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check deployment code and browser tracking tests
+        run: |
+          python3 -m unittest discover -s tests/deployment -p 'test_*.py'
+          node --test tests/Unit/tiktok-pixel.test.cjs
+          git ls-files -z app config routes platform | xargs -0 -r -n 1 bash -c '[[ "$0" != *.php ]] || php -l "$0" >/dev/null'
+      - name: Install deployment client
+        run: |
+          python3 -m venv "$RUNNER_TEMP/deploy-venv"
+          "$RUNNER_TEMP/deploy-venv/bin/pip" install --disable-pip-version-check paramiko==4.0.0
+      - name: Deploy over SFTP and verify the live website
+        env:
+          CPANEL_SFTP_HOST: ${{ secrets.CPANEL_SFTP_HOST }}
+          CPANEL_SFTP_PORT: ${{ secrets.CPANEL_SFTP_PORT }}
+          CPANEL_SFTP_USER: ${{ secrets.CPANEL_SFTP_USER }}
+          CPANEL_SFTP_PASSWORD: ${{ secrets.CPANEL_SFTP_PASSWORD }}
+          CPANEL_SSH_KNOWN_HOSTS: ${{ secrets.CPANEL_SSH_KNOWN_HOSTS }}
+          CPANEL_HOME: ${{ vars.CPANEL_HOME }}
+          CPANEL_INITIAL_REF: ${{ vars.CPANEL_INITIAL_REF }}
+          DEPLOY_HEALTH_URL: https://skymarket.co.ke/
+        run: '"$RUNNER_TEMP/deploy-venv/bin/python" scripts/deploy_cpanel.py'
