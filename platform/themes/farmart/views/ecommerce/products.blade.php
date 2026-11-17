@@ -41,7 +41,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <details class="sm-filter-details"><summary>{{ __('Filter products') }}</summary>
+            <div class="sm-catalog-filter-state" hidden>
             <form
                 id="products-filter-form"
                 data-action="{{ route('public.products') }}"
@@ -51,7 +51,7 @@
             >
                 @include(Theme::getThemeNamespace('views.ecommerce.includes.filters'))
             </form>
-            </details>
+            </div>
         </div>
         <div class="col-12 products-listing position-relative">
             @include(Theme::getThemeNamespace('views.ecommerce.includes.product-items'))

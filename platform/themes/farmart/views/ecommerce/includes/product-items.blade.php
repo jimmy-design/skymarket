@@ -20,23 +20,33 @@
 >
 <div
     class="row @if (request()->input('layout') == 'list') row-cols-1 shop-products-listing__list @else row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2 @endif shop-products-listing sm-reference-grid g-0">
-    @if ($products->isNotEmpty())
         @php
             $firstRowCategories = \Botble\Ecommerce\Models\ProductCategory::query()
                 ->wherePublished()->where('parent_id', 0)->orderBy('order')->orderBy('name')->get();
         @endphp
         <aside class="sm-first-row-categories" aria-label="{{ __('Product categories') }}">
-            <h2><span aria-hidden="true">≡</span> {{ __('Categories') }}</h2>
-            <nav aria-label="{{ __('Browse categories') }}">
-                <a href="{{ route('public.products') }}">{{ __('All products') }} <span aria-hidden="true">›</span></a>
+            <nav aria-label="{{ __('Browse categories') }}" tabindex="0">
                 @foreach ($firstRowCategories as $firstRowCategory)
+                    @php
+                        $categoryNameForIcon = mb_strtolower($firstRowCategory->name);
+                        $categoryEmoji = match (true) {
+                            str_contains($categoryNameForIcon, 'nursery') => "\u{1F6CF}\u{FE0F}",
+                            str_contains($categoryNameForIcon, 'maternity') => "\u{1F930}",
+                            str_contains($categoryNameForIcon, 'diaper') => "\u{1F6C1}",
+                            str_contains($categoryNameForIcon, 'toys') => "\u{1F9F8}",
+                            str_contains($categoryNameForIcon, 'clothing') => "\u{1F455}",
+                            str_contains($categoryNameForIcon, 'feeding') => "\u{1F37C}",
+                            str_contains($categoryNameForIcon, 'travel') => "\u{1F9F3}",
+                            default => "\u{1F6CD}\u{FE0F}",
+                        };
+                    @endphp
                     <a href="{{ route('public.products', ['categories' => [$firstRowCategory->id]]) }}" @if (in_array($firstRowCategory->id, (array) request('categories', []))) aria-current="page" @endif>
-                        <span>{{ $firstRowCategory->name }}</span><span aria-hidden="true">›</span>
+                        <span class="sm-category-icon" aria-hidden="true">@if ($firstRowCategory->icon_image)<img src="{{ RvMedia::getImageUrl($firstRowCategory->icon_image) }}" alt="" width="20" height="20" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>{{ $categoryEmoji }}</span>@else{{ $categoryEmoji }}@endif</span>
+                        <span class="sm-category-name">{{ $firstRowCategory->name }}</span>
                     </a>
                 @endforeach
             </nav>
         </aside>
-    @endif
     @forelse ($products as $product)
         <div class="col">
             <div class="product-inner">
