@@ -20,6 +20,23 @@
 >
 <div
     class="row @if (request()->input('layout') == 'list') row-cols-1 shop-products-listing__list @else row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2 @endif shop-products-listing sm-reference-grid g-0">
+    @if ($products->isNotEmpty())
+        @php
+            $firstRowCategories = \Botble\Ecommerce\Models\ProductCategory::query()
+                ->wherePublished()->where('parent_id', 0)->orderBy('order')->orderBy('name')->get();
+        @endphp
+        <aside class="sm-first-row-categories" aria-label="{{ __('Product categories') }}">
+            <h2><span aria-hidden="true">≡</span> {{ __('Categories') }}</h2>
+            <nav aria-label="{{ __('Browse categories') }}">
+                <a href="{{ route('public.products') }}">{{ __('All products') }} <span aria-hidden="true">›</span></a>
+                @foreach ($firstRowCategories as $firstRowCategory)
+                    <a href="{{ route('public.products', ['categories' => [$firstRowCategory->id]]) }}" @if (in_array($firstRowCategory->id, (array) request('categories', []))) aria-current="page" @endif>
+                        <span>{{ $firstRowCategory->name }}</span><span aria-hidden="true">›</span>
+                    </a>
+                @endforeach
+            </nav>
+        </aside>
+    @endif
     @forelse ($products as $product)
         <div class="col">
             <div class="product-inner">
