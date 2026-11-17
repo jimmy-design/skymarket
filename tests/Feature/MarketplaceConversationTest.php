@@ -5,10 +5,6 @@ namespace Tests\Feature;
 use Botble\Marketplace\Models\Message;
 use Botble\Marketplace\Supports\ConversationService;
 use Botble\Ecommerce\Models\Customer;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Theme\Farmart\Http\Controllers\SourcingController;
 use Botble\Marketplace\Http\Controllers\Fronts\CustomerMessageController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Schema\Blueprint;
@@ -137,65 +133,18 @@ class MarketplaceConversationTest extends TestCase
         $this->assertFalse($second['has_more']);
     }
 
-    private function prepareProduct(): void
+    private function prepareViewData(): void
     {
         Schema::create('slugs', function (Blueprint $table) {
             $table->id(); $table->integer('reference_id'); $table->string('reference_type');
             $table->string('key'); $table->string('prefix')->default('products');
         });
-        Schema::create('ec_products', function (Blueprint $table) {
-            $table->id(); $table->integer('store_id'); $table->string('name');
-            $table->string('status'); $table->boolean('is_variation')->default(false);
-        });
-        DB::table('ec_products')->insert(['id' => 100, 'store_id' => 10, 'name' => 'Test laptop', 'status' => 'published']);
         auth('customer')->setUser((new Customer())->forceFill(['id' => 1, 'name' => 'Buyer A', 'email' => 'a@example.test']));
-    }
-
-    public function test_quote_is_saved_for_the_authenticated_buyer_and_actual_supplier(): void
-    {
-        $this->prepareProduct();
-        $request = Request::create('/sourcing/enquiry/100', 'POST', [
-            'mode' => 'quote', 'quantity' => 25, 'delivery' => 'Nairobi', 'content' => 'Please confirm lead time.',
-            'customer_id' => 2, 'store_id' => 20, 'email' => 'spoof@example.test',
-        ]);
-        app(SourcingController::class)->send('100', $request);
-        $message = Message::query()->sole();
-        $this->assertSame(1, (int) $message->customer_id);
-        $this->assertSame(10, (int) $message->store_id);
-        $this->assertSame('a@example.test', $message->email);
-        $this->assertStringContainsString('Quantity: 25', $message->content);
-        $this->assertStringContainsString('Delivery location: Nairobi', $message->content);
-    }
-
-    public function test_invalid_quote_quantity_does_not_create_a_conversation(): void
-    {
-        $this->prepareProduct();
-        try {
-            app(SourcingController::class)->send('100', Request::create('/sourcing/enquiry/100', 'POST', [
-                'mode' => 'quote', 'quantity' => 0, 'content' => 'Need stock',
-            ]));
-            $this->fail('Expected validation failure');
-        } catch (ValidationException $exception) {
-            $this->assertArrayHasKey('quantity', $exception->errors());
-            $this->assertSame(0, Message::query()->count());
-        }
-    }
-
-    public function test_supplier_cannot_start_a_quote_with_their_own_store(): void
-    {
-        $this->prepareProduct();
-        auth('customer')->setUser((new Customer())->forceFill(['id' => 5, 'name' => 'Owner', 'email' => 'owner@example.test']));
-        try {
-            app(SourcingController::class)->enquiry('100', Request::create('/sourcing/enquiry/100'));
-            $this->fail('Expected access denial');
-        } catch (HttpException $exception) {
-            $this->assertSame(403, $exception->getStatusCode());
-        }
     }
 
     public function test_shared_chat_view_escapes_user_content_and_has_working_stream_and_reply_routes(): void
     {
-        $this->prepareProduct();
+        $this->prepareViewData();
         $conversation = $this->conversation();
         app(ConversationService::class)->send($conversation, 'vendor', 'Supplier', 'vendor@example.test', '<img src=x onerror=alert(1)>', null);
         $conversation->load(['store', 'replies']);
@@ -219,5 +168,35 @@ class MarketplaceConversationTest extends TestCase
         $this->assertSame('Your bulk price is ready', $data['conversations'][0]['preview']);
         $this->assertTrue($data['conversations'][0]['unread']);
         $this->assertStringNotContainsString('Do not expose', json_encode($data));
+    }
+
+    private function prepareChatProduct(): void
+    {
+        $this->prepareViewData();
+        Schema::create('ec_products', function (Blueprint $table) {
+            $table->id(); $table->integer('store_id'); $table->string('name');
+            $table->string('status'); $table->boolean('is_variation')->default(false);
+        });
+        DB::table('ec_products')->insert(['id' => 100, 'store_id' => 10, 'name' => 'Test product', 'status' => 'published']);
+    }
+
+    public function test_start_chat_reuses_the_buyers_existing_seller_conversation(): void
+    {
+        $this->prepareChatProduct();
+        $controller = app(CustomerMessageController::class);
+        $request = \Illuminate\Http\Request::create('/customer/messages/start/10', 'POST', ['product_id' => 100]);
+        $controller->start('10', $request);
+        $controller->start('10', $request);
+        $this->assertSame(1, Message::query()->whereNull('parent_id')->count());
+        $message = Message::query()->sole();
+        $this->assertSame(1, (int) $message->customer_id);
+        $this->assertSame(10, (int) $message->store_id);
+    }
+
+    public function test_start_chat_rejects_a_product_from_a_different_supplier(): void
+    {
+        $this->prepareChatProduct();
+        $this->expectException(ModelNotFoundException::class);
+        app(CustomerMessageController::class)->start('20', \Illuminate\Http\Request::create('/customer/messages/start/20', 'POST', ['product_id' => 100]));
     }
 }

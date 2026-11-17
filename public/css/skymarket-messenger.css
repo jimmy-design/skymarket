@@ -1,0 +1,44 @@
+.sm-chat *{box-sizing:border-box}
+.sm-chat h2{color:inherit;letter-spacing:-.035em}
+.sm-button{display:inline-flex;align-items:center;justify-content:center;gap:16px;padding:13px 22px;border:1px solid #ed632b;background:#ed632b;color:#fff!important;border-radius:8px;font-size:14px;font-weight:650;text-decoration:none;line-height:1.4;cursor:pointer;white-space:nowrap;transition:background .15s,transform .15s}
+.sm-button:hover{background:#cf4914;transform:translateY(-1px)}
+.sm-button:disabled{opacity:.6;cursor:wait;transform:none}
+.sm-button--outline{color:#172a2d!important;background:transparent;border-color:#ccd3d0}
+.sm-button--outline:hover{background:#fff2e9;border-color:#ed632b}
+.sm-button--light{background:#fff;color:#172a2d!important;border-color:#fff}
+.sm-text-link{font-size:13px;font-weight:650;text-decoration:none;color:#234b45!important}
+.sm-text-link:hover{text-decoration:underline}
+.sm-chat{background:#fff;border:1px solid #e1e6e2;border-radius:14px;overflow:hidden;color:#172a2d;max-width:1100px;margin:0 auto}
+.sm-chat__header{display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid #e9ede7}
+.sm-chat__header h2{font-size:18px;font-weight:650;margin:0 0 4px;line-height:1.3}
+.sm-avatar{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex-shrink:0;border-radius:50%;background:#e5eee5;color:#29523b;font-size:19px;font-weight:650}
+.sm-chat__back{font-size:24px;color:#526951;text-decoration:none}
+.sm-chat__status{font-size:11px;color:#567660}
+.sm-chat__notice{padding:12px 24px;background:#f5f5ef;font-size:11px;color:#797b69;line-height:1.7;margin:0}
+.sm-chat__messages{height:min(55vh,540px);min-height:280px;overflow-y:auto;padding:24px;background:#f9faf7;overscroll-behavior:contain}
+.sm-message{display:flex;margin:0 0 16px}
+.sm-message--own{justify-content:flex-end}
+.sm-message__bubble{max-width:82%;padding:14px 18px;border-radius:0 14px 14px 14px;background:#fff;border:1px solid #e3e9df;overflow-wrap:anywhere;min-width:130px}
+.sm-message--own .sm-message__bubble{background:#e4efe4;border-color:#d3e4d0;border-radius:14px 0 14px 14px}
+.sm-message__bubble strong{font-size:11px;color:#4d6653}
+.sm-message__bubble p{white-space:pre-wrap;font-size:14px;line-height:1.7;margin:5px 0 12px}
+.sm-message__bubble footer{display:flex;gap:12px;justify-content:space-between;font-size:10px;color:#7c8b7c}
+.sm-chat__composer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:20px 24px;border-top:1px solid #e4e8e0;background:#fff}
+.sm-chat__composer textarea{width:100%;border:1px solid #d5dfd2;border-radius:8px;padding:12px;font-size:14px;resize:vertical;min-height:64px;max-height:180px;color:#172a2d}
+.sm-chat__composer button{align-self:start;min-height:48px}
+.sm-chat__error{grid-column:1/-1;color:#b13222;font-size:12px;margin:0}
+.sm-chat__error:empty{display:none}
+.sm-chat__hint{grid-column:1/-1;font-size:10px;color:#8a9588}
+.sm-button:focus-visible,.sm-chat textarea:focus-visible{outline:3px solid #ec9e59;outline-offset:3px}
+@media(max-width:640px){.sm-chat__header{padding:14px 12px;gap:10px}
+.sm-chat__header h2{font-size:15px}
+.sm-chat__header>.sm-text-link{font-size:10px}
+.sm-chat__notice{padding:10px 14px;font-size:10px}
+.sm-chat__messages{padding:16px 12px;height:48vh}
+.sm-message__bubble{max-width:90%;padding:12px}
+.sm-chat__composer{padding:12px;gap:10px;grid-template-columns:1fr}
+.sm-chat__composer button{justify-self:end;font-size:12px}
+.sm-chat__hint{font-size:9px}
+.sm-chat__status{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.sm-button{transition:none}
+.sm-button:hover{transform:none}}

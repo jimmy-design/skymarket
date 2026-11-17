@@ -8,6 +8,9 @@ use Botble\Marketplace\Models\Message;
 use Botble\SeoHelper\Facades\SeoHelper;
 use Botble\Theme\Facades\Theme;
 use Botble\Marketplace\Supports\ConversationService;
+use Botble\Ecommerce\Models\Product;
+use Botble\Marketplace\Models\Store;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,6 +42,39 @@ class CustomerMessageController extends BaseController
             compact('messages'),
             'plugins/marketplace::themes.customer-messages.index'
         )->render();
+    }
+
+    public function start(string $store, Request $request): RedirectResponse
+    {
+        abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
+        $request->validate(['product_id' => ['required', 'integer']]);
+        $supplier = Store::query()->wherePublished()->findOrFail($store);
+        $customer = auth('customer')->user();
+        abort_if((int) $supplier->customer_id === (int) $customer->id, 403);
+        $product = Product::query()->wherePublished()->where('store_id', $supplier->id)
+            ->where('is_variation', false)->findOrFail($request->input('product_id'));
+        $conversation = Cache::lock('marketplace:start:' . $customer->id . ':' . $supplier->id, 10)->block(5, function () use ($customer, $supplier, $product) {
+            return Message::query()->firstOrCreate([
+                'customer_id' => $customer->id, 'store_id' => $supplier->id, 'parent_id' => null,
+            ], [
+                'sender_type' => 'customer', 'name' => $customer->name, 'email' => $customer->email,
+                'content' => __('Hello, I have a question about :product.', ['product' => $product->name]) . "\n" . $product->url,
+            ]);
+        });
+
+        return redirect()->route('customer.messages.show', $conversation);
+    }
+
+    public function unread()
+    {
+        abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
+        $customer = auth('customer')->user();
+        $vendor = $customer->is_vendor && $customer->store?->id;
+        $count = Message::query()->whereNull('read_at')
+            ->when($vendor, fn ($query) => $query->where('store_id', $customer->store->id)->where('sender_type', 'customer'),
+                fn ($query) => $query->where('customer_id', $customer->id)->where('sender_type', 'vendor'))->count();
+
+        return response()->json(['unread' => $count])->header('Cache-Control', 'private, no-store');
     }
 
     public function inbox(): JsonResponse

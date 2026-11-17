@@ -71,8 +71,15 @@
     @endif
 </form>
 @if (is_plugin_active('marketplace') && $product->store?->exists && MarketplaceHelper::isEnabledMessagingSystem())
-    <div class="d-flex gap-2 flex-wrap my-3">
-        <a class="btn btn-outline-dark" href="{{ route('public.sourcing.enquiry', $product->original_product->id) }}">{{ __('Request bulk quote') }}</a>
-        <a class="btn btn-outline-dark" href="{{ route('public.sourcing.enquiry', ['id' => $product->original_product->id, 'mode' => 'chat']) }}">{{ __('Chat with supplier') }} ↗</a>
-    </div>
+    @auth('customer')
+        @if ((int) $product->store->customer_id !== (int) auth('customer')->id())
+            <form action="{{ route('customer.messages.start', $product->store_id) }}" method="POST" class="my-3">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
+                <button type="submit" class="btn btn-outline-dark">{{ __('Chat with seller') }}</button>
+            </form>
+        @endif
+    @else
+        <a class="btn btn-outline-dark my-3" href="{{ route('customer.login') }}">{{ __('Sign in to chat with seller') }}</a>
+    @endauth
 @endif

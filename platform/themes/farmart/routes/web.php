@@ -5,17 +5,8 @@ use Botble\Ecommerce\Http\Controllers\Fronts\PublicAjaxController;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Support\Facades\Route;
 use Theme\Farmart\Http\Controllers\FarmartController;
-use Theme\Farmart\Http\Controllers\SourcingController;
 
 Theme::registerRoutes(function () {
-    if (is_plugin_active('ecommerce') && is_plugin_active('marketplace')) {
-        Route::get('sourcing', [SourcingController::class, 'index'])->name('public.sourcing');
-        Route::middleware('customer')->group(function () {
-            Route::get('sourcing/enquiry/{id}', [SourcingController::class, 'enquiry'])->whereNumber('id')->name('public.sourcing.enquiry');
-            Route::post('sourcing/enquiry/{id}', [SourcingController::class, 'send'])->whereNumber('id')->middleware('throttle:10,1')->name('public.sourcing.send');
-            Route::get('messaging/unread', [SourcingController::class, 'unread'])->middleware('throttle:30,1')->name('public.messaging.unread');
-        });
-    }
     Route::middleware(RequiresJsonRequestMiddleware::class)
         ->prefix('ajax')
         ->name('public.ajax.')

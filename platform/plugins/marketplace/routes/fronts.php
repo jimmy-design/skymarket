@@ -17,6 +17,9 @@ Route::group([
     'namespace' => 'Botble\Marketplace\Http\Controllers\Fronts',
 ], function () {
     Theme::registerRoutes(function () {
+        Route::get('messaging/unread', [CustomerMessageController::class, 'unread'])
+            ->middleware(['customer', 'throttle:30,1'])->name('public.messaging.unread');
+
         $slugPrefix = SlugHelper::getPrefix(Store::class, 'stores');
 
         Route::get('vendor-promotion-packages', [PromotionPackageController::class, 'index'])
@@ -51,6 +54,7 @@ Route::group([
             ->middleware('customer')
             ->group(function () {
                 Route::get('/', [CustomerMessageController::class, 'index'])->name('index');
+                Route::post('start/{store}', [CustomerMessageController::class, 'start'])->whereNumber('store')->middleware('throttle:10,1')->name('start');
                 Route::get('live', [CustomerMessageController::class, 'inbox'])->middleware('throttle:30,1')->name('live');
                 Route::get('{message}', [CustomerMessageController::class, 'show'])->name('show');
                 Route::get('{message}/stream', [CustomerMessageController::class, 'stream'])->middleware('throttle:120,1')->name('stream');

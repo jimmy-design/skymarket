@@ -7,8 +7,6 @@
 @endphp
 
 {!! Theme::partial('page-header', ['withTitle' => true]) !!}
-<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v={{ filemtime(public_path('css/skymarket-marketplace.css')) }}">
-<section class="sm-market sm-catalog container-xxxl" style="min-height:0;padding-bottom:12px"><div class="sm-section__heading"><div><span class="sm-eyebrow">{{ __('BUILD YOUR NEXT BUSINESS CONNECTION') }}</span><h1>{{ __('Find a supplier. Start a conversation.') }}</h1><p>{{ __('Explore supplier profiles and their products. Ask about specifications, bulk quantities and delivery before you buy.') }}</p></div><a class="sm-text-link" href="{{ route('public.sourcing') }}">{{ __('Source products') }} ↗</a></div></section>
 
 <div class="container-xxxl mb-4">
     <div class="row">
