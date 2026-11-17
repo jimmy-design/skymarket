@@ -766,6 +766,7 @@
 
     {!! Theme::header() !!}
     <link rel="stylesheet" href="{{ asset('css/skymarket-product-grid.css') }}?v={{ filemtime(public_path('css/skymarket-product-grid.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/skymarket-responsive.css') }}?v={{ filemtime(public_path('css/skymarket-responsive.css')) }}">
     <script src="{{ asset('js/skymarket-product-images.js') }}?v={{ filemtime(public_path('js/skymarket-product-images.js')) }}" defer></script>
 
     <style>
