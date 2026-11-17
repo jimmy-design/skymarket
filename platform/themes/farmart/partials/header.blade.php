@@ -768,6 +768,9 @@
     <link rel="stylesheet" href="{{ asset('css/skymarket-product-grid.css') }}?v={{ filemtime(public_path('css/skymarket-product-grid.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/skymarket-responsive.css') }}?v={{ filemtime(public_path('css/skymarket-responsive.css')) }}">
     <script src="{{ asset('js/skymarket-product-images.js') }}?v={{ filemtime(public_path('js/skymarket-product-images.js')) }}" defer></script>
+    @if (request()->routeIs('public.index') || request()->boolean('homepage_catalog'))
+        <script src="{{ asset('js/skymarket-seller-banner.js') }}?v={{ filemtime(public_path('js/skymarket-seller-banner.js')) }}" defer></script>
+    @endif
 
     <style>
         .section-content.section-content__slider {

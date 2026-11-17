@@ -38,6 +38,9 @@
                     method="GET"
                 >
                     <input type="hidden" name="q" value="{{ BaseHelper::stringify(request()->query('q')) }}">
+                    @if (request()->routeIs('public.index'))
+                        <input type="hidden" name="homepage_catalog" value="1" class="product-filter-item">
+                    @endif
                     @include(Theme::getThemeNamespace('views.ecommerce.includes.filters'))
                 </form>
             </div>

@@ -1,5 +1,6 @@
 @php
     $products->loadMissing(['defaultVariation', 'variations.product', 'options', 'options.values']);
+    $showSellerBanner = is_plugin_active('marketplace') && (request()->routeIs('public.index') || request()->boolean('homepage_catalog'));
 @endphp
 <div class="loading loading-container">
     <div class="half-circle-spinner">
@@ -53,6 +54,9 @@
                 {!! Theme::partial('ecommerce.product-item', compact('product')) !!}
             </div>
         </div>
+        @if ($showSellerBanner && $loop->iteration === min(11, $products->count()))
+            {!! Theme::partial('ecommerce.seller-banner') !!}
+        @endif
     @empty
         <div class="col-12 w-100">
             <div
