@@ -22,7 +22,7 @@ class MessageController extends BaseController
         }
 
         $this->pageTitle(__('Messages'));
-        Assets::addScriptsDirectly([asset('js/skymarket-vendor-inbox.js')]);
+        Assets::addScriptsDirectly([asset('js/skymarket-vendor-inbox.js') . '?v=' . filemtime(public_path('js/skymarket-vendor-inbox.js'))]);
 
         return $messageTable->renderTable();
     }

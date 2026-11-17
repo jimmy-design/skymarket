@@ -1,5 +1,5 @@
 @php Theme::layout('full-width'); @endphp
-<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v={{ filemtime(public_path('css/skymarket-marketplace.css')) }}">
 <main class="sm-market sm-catalog container-xxxl">
     <nav class="sm-breadcrumb"><a href="{{ url('/') }}">{{ __('Home') }}</a> / {{ __('Source products') }}</nav>
     <div class="sm-section__heading"><div><span class="sm-eyebrow">{{ __('SHOP RETAIL. SOURCE WHOLESALE.') }}</span><h1>{{ __('Find the right product. Meet the right supplier.') }}</h1><p>{{ __('Explore listed prices, then talk quantities, specifications and delivery directly with a supplier.') }}</p></div><a class="sm-text-link" href="{{ route('public.stores') }}">{{ __('Find suppliers') }} ↗</a></div>

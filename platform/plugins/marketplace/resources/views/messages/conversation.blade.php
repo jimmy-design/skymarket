@@ -4,7 +4,7 @@
     $items = collect([$message])->merge($message->replies)->sortBy('id');
     $routePrefix = $isVendor ? 'marketplace.vendor.messages.' : 'customer.messages.';
 @endphp
-<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v={{ filemtime(public_path('css/skymarket-marketplace.css')) }}">
 <section class="sm-chat" data-sm-chat data-stream="{{ route($routePrefix . 'stream', $message) }}" data-viewer="{{ $viewer }}" data-partner="{{ $partner }}" data-you="{{ __('You') }}" data-last-id="{{ $items->max('id') }}">
     <header class="sm-chat__header">
         <a href="{{ route($routePrefix . 'index') }}" class="sm-chat__back" aria-label="{{ __('Back to messages') }}">←</a>
@@ -33,4 +33,4 @@
         <p class="sm-chat__notice">{{ __('This guest enquiry can be answered by email. Registered buyers can receive live replies here.') }} <a href="mailto:{{ $message->email }}">{{ $message->email }}</a></p>
     @endif
 </section>
-<script src="{{ asset('js/skymarket-messenger.js') }}?v=1" defer></script>
+<script src="{{ asset('js/skymarket-messenger.js') }}?v={{ filemtime(public_path('js/skymarket-messenger.js')) }}" defer></script>

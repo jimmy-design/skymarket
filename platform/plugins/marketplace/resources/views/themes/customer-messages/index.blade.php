@@ -32,5 +32,5 @@
     </div>
 
     <div class="mt-3">{{ $messages->links() }}</div>
-    <script src="{{ asset('js/skymarket-buyer-inbox.js') }}?v=1" defer></script>
+    <script src="{{ asset('js/skymarket-buyer-inbox.js') }}?v={{ filemtime(public_path('js/skymarket-buyer-inbox.js')) }}" defer></script>
 @endsection

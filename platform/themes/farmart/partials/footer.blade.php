@@ -407,7 +407,7 @@
 
     {!! Theme::footer() !!}
     @if (is_plugin_active('marketplace') && auth('customer')->check())
-        <script src="{{ asset('js/skymarket-inbox.js') }}?v=1" defer></script>
+        <script src="{{ asset('js/skymarket-inbox.js') }}?v={{ filemtime(public_path('js/skymarket-inbox.js')) }}" defer></script>
     @endif
 
     @include('packages/theme::toast-notification')

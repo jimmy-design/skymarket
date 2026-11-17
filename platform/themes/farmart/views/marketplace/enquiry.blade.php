@@ -1,5 +1,5 @@
 @php Theme::layout('full-width'); @endphp
-<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v={{ filemtime(public_path('css/skymarket-marketplace.css')) }}">
 <main class="sm-market sm-catalog container-xxxl">
     <nav class="sm-breadcrumb"><a href="{{ route('public.sourcing') }}">{{ __('Source products') }}</a> / {{ $mode === 'quote' ? __('Request a quote') : __('Chat with supplier') }}</nav>
     <div class="sm-enquiry-grid"><section><span class="sm-eyebrow">{{ __('LET’S TALK DETAILS') }}</span><h1>{{ $mode === 'quote' ? __('Better sourcing starts with a conversation.') : __('Connect with your supplier.') }}</h1><p>{{ __('Send your requirements to the supplier. Replies appear in your SkyMarket messages without refreshing the conversation.') }}</p>

@@ -4,7 +4,7 @@
     $sourceProducts = \Botble\Ecommerce\Models\Product::query()->wherePublished()->where('is_variation', false)->with(['slugable', 'store.slugable', 'store.customer', 'defaultVariation.product'])->latest('id')->limit(6)->get();
     $sourceStores = \Botble\Marketplace\Models\Store::query()->wherePublished()->with(['slugable', 'customer'])->withCount(['products' => fn ($query) => $query->wherePublished()->where('is_variation', false)])->latest('id')->limit(4)->get();
 @endphp
-<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v={{ filemtime(public_path('css/skymarket-marketplace.css')) }}">
 <div class="sm-market">
     <nav class="sm-trade-nav container-xxxl" aria-label="{{ __('Marketplace') }}"><a href="{{ route('public.sourcing') }}">{{ __('Source products') }}</a><a href="{{ route('public.stores') }}">{{ __('Find suppliers') }}</a><a href="{{ route('customer.messages.index') }}">{{ __('Messages & enquiries') }}</a><a href="{{ $sellingUrl }}">{{ __('Start selling') }} ↗</a></nav>
     <section class="sm-hero">
