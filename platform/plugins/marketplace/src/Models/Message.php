@@ -6,6 +6,7 @@ use Botble\Base\Models\BaseModel;
 use Botble\Ecommerce\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Message extends BaseModel
 {
@@ -44,5 +45,10 @@ class Message extends BaseModel
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function latestReply(): HasOne
+    {
+        return $this->hasOne(self::class, 'parent_id')->latestOfMany();
     }
 }

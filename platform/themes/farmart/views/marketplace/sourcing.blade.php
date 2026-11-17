@@ -1,0 +1,10 @@
+@php Theme::layout('full-width'); @endphp
+<link rel="stylesheet" href="{{ asset('css/skymarket-marketplace.css') }}?v=1">
+<main class="sm-market sm-catalog container-xxxl">
+    <nav class="sm-breadcrumb"><a href="{{ url('/') }}">{{ __('Home') }}</a> / {{ __('Source products') }}</nav>
+    <div class="sm-section__heading"><div><span class="sm-eyebrow">{{ __('SHOP RETAIL. SOURCE WHOLESALE.') }}</span><h1>{{ __('Find the right product. Meet the right supplier.') }}</h1><p>{{ __('Explore listed prices, then talk quantities, specifications and delivery directly with a supplier.') }}</p></div><a class="sm-text-link" href="{{ route('public.stores') }}">{{ __('Find suppliers') }} ↗</a></div>
+    <form method="GET" class="sm-catalog__filters" action="{{ route('public.sourcing') }}"><div><label for="sm-query">{{ __('Product or keyword') }}</label><input id="sm-query" name="q" value="{{ request('q') }}" maxlength="150" placeholder="{{ __('Search products…') }}"></div><div><label for="sm-category">{{ __('Category') }}</label><select id="sm-category" name="category"><option value="">{{ __('All categories') }}</option>@foreach ($categories as $category)<option value="{{ $category->id }}" @selected(request('category') == $category->id)>{{ $category->name }}</option>@endforeach</select></div><button class="sm-button">{{ __('Find products') }} ↗</button><a class="sm-text-link" href="{{ route('public.sourcing') }}">{{ __('Reset') }}</a></form>
+    <div class="sm-result-count">{{ trans_choice(':count product found|:count products found', $products->total(), ['count' => $products->total()]) }}</div>
+    <div class="sm-products">@forelse ($products as $product){!! Theme::partial('marketplace.sourcing-product', compact('product')) !!}@empty<div class="sm-empty"><h2>{{ __('No products match yet') }}</h2><p>{{ __('Try a different keyword or browse another category.') }}</p><a class="sm-button" href="{{ route('public.sourcing') }}">{{ __('Browse all products') }}</a></div>@endforelse</div>
+    <div class="py-4">{{ $products->links() }}</div>
+</main>

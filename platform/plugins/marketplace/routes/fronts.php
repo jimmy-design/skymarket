@@ -51,8 +51,10 @@ Route::group([
             ->middleware('customer')
             ->group(function () {
                 Route::get('/', [CustomerMessageController::class, 'index'])->name('index');
+                Route::get('live', [CustomerMessageController::class, 'inbox'])->middleware('throttle:30,1')->name('live');
                 Route::get('{message}', [CustomerMessageController::class, 'show'])->name('show');
-                Route::post('{message}/reply', [CustomerMessageController::class, 'reply'])->name('reply');
+                Route::get('{message}/stream', [CustomerMessageController::class, 'stream'])->middleware('throttle:120,1')->name('stream');
+                Route::post('{message}/reply', [CustomerMessageController::class, 'reply'])->middleware('throttle:30,1')->name('reply');
             });
 
         Route::group([
@@ -130,7 +132,8 @@ Route::group([
 
             Route::match(['GET', 'POST'], 'messages', [MessageController::class, 'index'])->name('messages.index');
             Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-            Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
+            Route::get('messages/{message}/stream', [MessageController::class, 'stream'])->middleware('throttle:120,1')->name('messages.stream');
+            Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->middleware('throttle:30,1')->name('messages.reply');
             Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
             if (EcommerceHelper::isReviewEnabled()) {

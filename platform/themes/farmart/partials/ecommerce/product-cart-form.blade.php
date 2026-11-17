@@ -70,3 +70,9 @@
         </div>
     @endif
 </form>
+@if (is_plugin_active('marketplace') && $product->store?->exists && MarketplaceHelper::isEnabledMessagingSystem())
+    <div class="d-flex gap-2 flex-wrap my-3">
+        <a class="btn btn-outline-dark" href="{{ route('public.sourcing.enquiry', $product->original_product->id) }}">{{ __('Request bulk quote') }}</a>
+        <a class="btn btn-outline-dark" href="{{ route('public.sourcing.enquiry', ['id' => $product->original_product->id, 'mode' => 'chat']) }}">{{ __('Chat with supplier') }} ↗</a>
+    </div>
+@endif

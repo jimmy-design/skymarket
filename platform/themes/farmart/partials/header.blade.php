@@ -1223,8 +1223,8 @@
                                                 <path d="M12 22.5c0-7.1 5.7-12.3 13.1-12.3 7.5 0 13.4 5.1 13.4 12.3 0 7.1-5.9 12.2-13.4 12.2-1.5 0-3-.2-4.3-.7-2.2 1.8-4.8 3-7.8 3.5 1.4-1.8 2.2-3.8 2.4-5.9-2.1-2.2-3.4-5.3-3.4-9.1Z" fill="#fff" />
                                             </svg>
                                         </span>
-                                        @if ($headerUnreadMessages)
-                                            <span class="header-quick-actions__badge">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
+                                        @if ($headerCustomer)
+                                            <span class="header-quick-actions__badge" data-sm-unread data-url="{{ route('public.messaging.unread') }}" style="{{ $headerUnreadMessages ? '' : 'display:none' }}">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
                                         @endif
                                     </a>
                                     <a

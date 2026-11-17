@@ -4,9 +4,12 @@ namespace Botble\Marketplace\Http\Controllers\Fronts;
 
 use Botble\Base\Http\Actions\DeleteResourceAction;
 use Botble\Base\Http\Controllers\BaseController;
+use Botble\Base\Facades\Assets;
 use Botble\Marketplace\Facades\MarketplaceHelper;
 use Botble\Marketplace\Models\Message;
 use Botble\Marketplace\Tables\MessageTable;
+use Botble\Marketplace\Supports\ConversationService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -19,6 +22,7 @@ class MessageController extends BaseController
         }
 
         $this->pageTitle(__('Messages'));
+        Assets::addScriptsDirectly([asset('js/skymarket-vendor-inbox.js')]);
 
         return $messageTable->renderTable();
     }
@@ -46,27 +50,28 @@ class MessageController extends BaseController
         return MarketplaceHelper::view('vendor-dashboard.messages.show', compact('message'));
     }
 
-    public function reply(string $id, Request $request): RedirectResponse
+    public function stream(string $id, Request $request, ConversationService $service): JsonResponse
+    {
+        abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
+        $request->validate(['after' => ['nullable', 'integer', 'min:0']]);
+        $conversation = $service->find($id, 'vendor', (int) auth('customer')->user()->store->id);
+
+        return response()->json($service->stream($conversation, 'vendor', (int) $request->input('after', 0)))
+            ->header('Cache-Control', 'private, no-store');
+    }
+
+    public function reply(string $id, Request $request, ConversationService $service): RedirectResponse|JsonResponse
     {
         abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
 
-        $data = $request->validate(['content' => ['required', 'string', 'max:2000']]);
+        $data = $request->validate(['content' => ['required', 'string', 'max:2000', 'regex:/\S/u'], 'client_id' => ['nullable', 'uuid']]);
         $vendor = auth('customer')->user();
-        $message = Message::query()
-            ->where('store_id', $vendor->store->id)
-            ->whereNull('parent_id')
-            ->findOrFail($id);
-
-        Message::query()->create([
-            'parent_id' => $message->getKey(),
-            'store_id' => $message->store_id,
-            'customer_id' => $message->customer_id,
-            'sender_type' => 'vendor',
-            'name' => $vendor->store->name,
-            'email' => $vendor->store->email ?: $vendor->email,
-            'content' => $data['content'],
-        ]);
-        $message->touch();
+        $message = $service->find($id, 'vendor', (int) $vendor->store->id);
+        abort_unless($message->customer_id, 422);
+        $reply = $service->send($message, 'vendor', $vendor->store->name, $vendor->store->email ?: $vendor->email, $data['content'], $data['client_id'] ?? null);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $service->serialize($reply)]);
+        }
 
         return back()->with('success_msg', __('Reply sent successfully.'));
     }

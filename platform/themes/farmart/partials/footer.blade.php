@@ -406,6 +406,9 @@
     </script>
 
     {!! Theme::footer() !!}
+    @if (is_plugin_active('marketplace') && auth('customer')->check())
+        <script src="{{ asset('js/skymarket-inbox.js') }}?v=1" defer></script>
+    @endif
 
     @include('packages/theme::toast-notification')
     </body>

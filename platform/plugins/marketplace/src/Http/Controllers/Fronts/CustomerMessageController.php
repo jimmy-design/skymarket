@@ -7,6 +7,8 @@ use Botble\Marketplace\Facades\MarketplaceHelper;
 use Botble\Marketplace\Models\Message;
 use Botble\SeoHelper\Facades\SeoHelper;
 use Botble\Theme\Facades\Theme;
+use Botble\Marketplace\Supports\ConversationService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -27,7 +29,8 @@ class CustomerMessageController extends BaseController
         $messages = Message::query()
             ->where('customer_id', auth('customer')->id())
             ->whereNull('parent_id')
-            ->with(['store', 'replies'])
+            ->with(['store', 'latestReply'])
+            ->withCount(['replies as unread_count' => fn ($query) => $query->where('sender_type', 'vendor')->whereNull('read_at')])
             ->latest('updated_at')
             ->paginate(10);
 
@@ -36,6 +39,23 @@ class CustomerMessageController extends BaseController
             compact('messages'),
             'plugins/marketplace::themes.customer-messages.index'
         )->render();
+    }
+
+    public function inbox(): JsonResponse
+    {
+        abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
+        $messages = Message::query()->where('customer_id', auth('customer')->id())->whereNull('parent_id')
+            ->with(['store', 'latestReply'])
+            ->withCount(['replies as unread_count' => fn ($query) => $query->where('sender_type', 'vendor')->whereNull('read_at')])
+            ->latest('updated_at')->limit(10)->get();
+
+        return response()->json(['conversations' => $messages->map(fn (Message $message) => [
+            'url' => route('customer.messages.show', $message),
+            'supplier' => $message->store?->name ?: __('Unavailable supplier'),
+            'preview' => mb_substr($message->latestReply?->content ?: $message->content, 0, 110),
+            'updated_at' => ($message->latestReply?->created_at ?: $message->created_at)->toIso8601String(),
+            'unread' => $message->unread_count > 0,
+        ])])->header('Cache-Control', 'private, no-store');
     }
 
     public function show(string $id)
@@ -50,7 +70,7 @@ class CustomerMessageController extends BaseController
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        SeoHelper::setTitle(__('Conversation with :store', ['store' => $message->store->name]));
+        SeoHelper::setTitle(__('Conversation with :store', ['store' => $message->store?->name ?: __('Supplier')]));
 
         return Theme::scope(
             'marketplace.customer-messages.show',
@@ -59,24 +79,29 @@ class CustomerMessageController extends BaseController
         )->render();
     }
 
-    public function reply(string $id, Request $request): RedirectResponse
+    public function stream(string $id, Request $request, ConversationService $service): JsonResponse
+    {
+        abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
+        $request->validate(['after' => ['nullable', 'integer', 'min:0']]);
+        $conversation = $service->find($id, 'customer', (int) auth('customer')->id());
+
+        return response()->json($service->stream($conversation, 'customer', (int) $request->input('after', 0)))
+            ->header('Cache-Control', 'private, no-store');
+    }
+
+    public function reply(string $id, Request $request, ConversationService $service): RedirectResponse|JsonResponse
     {
         abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
 
-        $data = $request->validate(['content' => ['required', 'string', 'max:2000']]);
-        $message = $this->findConversation($id);
+        $data = $request->validate(['content' => ['required', 'string', 'max:2000', 'regex:/\S/u'], 'client_id' => ['nullable', 'uuid']]);
+        $message = $service->find($id, 'customer', (int) auth('customer')->id());
+        abort_unless($message->store, 404);
         $customer = auth('customer')->user();
 
-        Message::query()->create([
-            'parent_id' => $message->getKey(),
-            'store_id' => $message->store_id,
-            'customer_id' => $customer->getKey(),
-            'sender_type' => 'customer',
-            'name' => $customer->name,
-            'email' => $customer->email,
-            'content' => $data['content'],
-        ]);
-        $message->touch();
+        $reply = $service->send($message, 'customer', $customer->name, $customer->email, $data['content'], $data['client_id'] ?? null);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $service->serialize($reply)]);
+        }
 
         return back()->with('success_msg', __('Reply sent successfully.'));
     }
