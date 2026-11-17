@@ -1208,19 +1208,13 @@
                                     <a
                                         class="header-quick-actions__item header-quick-actions__item--notifications"
                                         href="{{ $headerMessageUrl }}"
-                                        title="{{ __('Messages') }}"
-                                        aria-label="{{ __('Messages') }}"
+                                        title="{{ __('Notifications') }}"
+                                        aria-label="{{ __('Notifications') }}"
                                     >
                                         <span class="header-quick-actions__icon" aria-hidden="true">
-                                            <svg viewBox="0 0 48 48">
-                                                <defs>
-                                                    <linearGradient id="header-message-green" x1="24" y1="5" x2="24" y2="43" gradientUnits="userSpaceOnUse">
-                                                        <stop stop-color="#65f45b" />
-                                                        <stop offset="1" stop-color="#00c91f" />
-                                                    </linearGradient>
-                                                </defs>
-                                                <rect x="3" y="3" width="42" height="42" rx="12" fill="url(#header-message-green)" />
-                                                <path d="M12 22.5c0-7.1 5.7-12.3 13.1-12.3 7.5 0 13.4 5.1 13.4 12.3 0 7.1-5.9 12.2-13.4 12.2-1.5 0-3-.2-4.3-.7-2.2 1.8-4.8 3-7.8 3.5 1.4-1.8 2.2-3.8 2.4-5.9-2.1-2.2-3.4-5.3-3.4-9.1Z" fill="#fff" />
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+                                                <path d="M10 21h4" />
                                             </svg>
                                         </span>
                                         @if ($headerCustomer)
