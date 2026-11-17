@@ -765,6 +765,8 @@
     @endphp
 
     {!! Theme::header() !!}
+    <link rel="stylesheet" href="{{ asset('css/skymarket-product-grid.css') }}?v={{ filemtime(public_path('css/skymarket-product-grid.css')) }}">
+    <script src="{{ asset('js/skymarket-product-images.js') }}?v={{ filemtime(public_path('js/skymarket-product-images.js')) }}" defer></script>
 
     <style>
         .section-content.section-content__slider {
