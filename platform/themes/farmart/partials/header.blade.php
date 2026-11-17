@@ -774,29 +774,33 @@
 
     <style>
         .section-content.section-content__slider {
-            padding: 10px 15px;
+            padding: 18px 15px 24px;
+            background: #fff !important;
+            background-image: none !important;
         }
-
-        .section-content.section-content__slider.is-hidden-by-search {
-            display: none !important;
+        .section-content.section-content__slider.is-hidden-by-search { display: none !important; }
+        .section-content__slider .section-slides-wrapper {
+            border: 1px solid #eee9e3;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 8px 28px rgba(30, 45, 52, .06);
+            padding: 0 0 44px;
+            overflow: hidden;
         }
-
         .section-content.section-content__slider .section-slides-wrapper .slick-slides-carousel:not(.slick-initialized),
         .section-content.section-content__slider .section-slides-wrapper .slide-item .slide-item__image,
         .section-content.section-content__slider .section-banner-wrapper .banner-medium .banner-item__image {
-            background-color: #fff;
-            height: 20vw;
-            max-height: 280px;
+            background: #fff;
+            aspect-ratio: 5 / 1;
+            height: auto;
+            max-height: none;
         }
-
         .section-content.section-content__slider .slide-item__image a,
         .section-content.section-content__slider .slide-item__image picture {
             display: block;
             height: 100%;
-            overflow: hidden;
             width: 100%;
         }
-
         .section-content.section-content__slider .slide-item__image img,
         .section-content.section-content__slider .banner-item__image img {
             display: block !important;
@@ -804,19 +808,35 @@
             max-height: 100% !important;
             max-width: 100% !important;
             object-fit: contain !important;
-            object-position: center center !important;
+            object-position: center !important;
             width: 100% !important;
         }
-
+        .section-content__slider .section-slides-wrapper .arrows-wrapper { right: 14px; bottom: 7px; gap: 6px; }
+        .section-content__slider .arrows-wrapper .slick-arrow {
+            width: 30px; height: 30px; line-height: 28px; border-radius: 50%;
+            margin: 0; border-color: #eee9e3; color: #243c43;
+        }
+        .section-content__slider .arrows-wrapper .slick-arrow:hover { background: #fff2e7; border-color: #ff8a26; }
+        .section-content__slider .slick-dots {
+            position: absolute; bottom: -30px; left: 20px; right: 100px;
+            display: flex; align-items: center; gap: 7px; list-style: none; padding: 0; margin: 0;
+        }
+        .section-content__slider .slick-dots li { width: auto; height: auto; margin: 0; }
+        .section-content__slider .slick-dots button {
+            display: block; width: 7px; height: 7px; padding: 0; border: 0;
+            border-radius: 10px; background: #dcdedc; font-size: 0; transition: width .2s, background .2s;
+        }
+        .section-content__slider .slick-dots button::before { display: none; }
+        .section-content__slider .slick-dots .slick-active button { width: 24px; background: #ff811a; }
+        .section-content__slider button:focus-visible { outline: 2px solid #f78120; outline-offset: 3px; }
         @media (max-width: 767px) {
-            .section-content.section-content__slider {
-                padding: 8px 15px;
-            }
-
+            .section-content.section-content__slider { padding: 8px 0 16px; }
+            .section-content__slider .section-slides-wrapper { border-radius: 12px; }
             .section-content.section-content__slider .section-slides-wrapper .slick-slides-carousel:not(.slick-initialized),
             .section-content.section-content__slider .section-slides-wrapper .slide-item .slide-item__image {
-                height: 32vw;
-                max-height: 220px;
+                aspect-ratio: 2.6 / 1;
+                height: auto;
+                max-height: none;
             }
         }
 

@@ -10,11 +10,12 @@
             'slidesToScroll' => 1,
             'appendArrows' => '.arrows-wrapper',
             'fade' => true,
+            'dots' => true,
+            'pauseOnHover' => true,
         ];
     @endphp
     <div
-        class="section-content section-content__slider lazyload"
-        @if ($shortcode->background) data-bg="{{ RvMedia::getImageUrl($shortcode->background) }}" @endif
+        class="section-content section-content__slider"
     >
         <div class="container-xxxl">
             <div class="row gx-0 gx-md-4">
@@ -48,7 +49,7 @@
                                                 media="(max-width: 767px)"
                                             />
                                             <img
-                                                src="{{ image_placeholder($slider->image) }}"
+                                                src="{{ RvMedia::getImageUrl($slider->image, null, false, RvMedia::getDefaultImage()) }}"
                                                 alt="{{ $slider->title }}"
                                                 loading="eager"
                                             />
