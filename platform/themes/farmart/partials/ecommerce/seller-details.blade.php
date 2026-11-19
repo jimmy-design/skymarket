@@ -88,16 +88,23 @@
                 {{ $isCustomerLoggedIn ? __('Call vendor') : __('View contact') }}
             </a>
         @endif
-        @if ($messagingEnabled && (!$isCustomerLoggedIn || (int) $store->customer_id !== (int) auth('customer')->id()))
+        @if ($messagingEnabled)
             @auth('customer')
-                <form class="vendor-card__chat-form" action="{{ route('customer.messages.start', $store->id) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
-                    <button class="vendor-card__button vendor-card__button--chat" type="submit">
+                @if ((int) $store->customer_id !== (int) auth('customer')->id())
+                    <form class="vendor-card__chat-form" action="{{ route('customer.messages.start', $store->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
+                        <button class="vendor-card__button vendor-card__button--chat" type="submit">
+                            <x-core::icon name="ti ti-messages" />
+                            <span>{{ __('Chat with seller') }}</span>
+                        </button>
+                    </form>
+                @else
+                    <a class="vendor-card__button vendor-card__button--chat" href="{{ auth('customer')->user()->is_vendor ? route('marketplace.vendor.messages.index') : route('customer.messages.index') }}">
                         <x-core::icon name="ti ti-messages" />
-                        <span>{{ __('Chat with seller') }}</span>
-                    </button>
-                </form>
+                        <span>{{ __('View conversations') }}</span>
+                    </a>
+                @endif
             @else
                 <a class="vendor-card__button vendor-card__button--chat" href="{{ route('customer.login') }}">
                     <x-core::icon name="ti ti-messages" />
