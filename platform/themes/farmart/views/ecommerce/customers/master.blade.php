@@ -8,13 +8,13 @@
 {!! Theme::partial('page-header', ['size' => 'xxxl']) !!}
 
 <div class="container-xxxl">
-    <div class="row my-4">
-        <div class="col-md-3">
-            <button class="dashboard-navigation-toggle" type="button" data-account-navigation-toggle aria-expanded="true" aria-controls="customer-dashboard-navigation">
+    <div class="customer-account-layout row my-4">
+        <div class="customer-account-sidebar col-md-auto" data-customer-account-sidebar>
+            <button class="customer-account-sidebar__toggle" type="button" data-account-navigation-toggle aria-expanded="false" aria-controls="customer-dashboard-navigation" aria-label="{{ __('Expand account menu') }}" title="{{ __('Expand account menu') }}">
+                <x-core::icon name="ti ti-menu-2" />
                 <span>{{ __('My account') }}</span>
-                <x-core::icon name="ti ti-chevron-down" />
             </button>
-            <ul class="nav flex-column dashboard-navigation mb-5" id="customer-dashboard-navigation">
+            <ul class="nav flex-column dashboard-navigation" id="customer-dashboard-navigation">
                 @foreach (DashboardMenu::getAll('customer') as $item)
                     <li class="nav-item" id="{{ $item['id'] }}">
                         <a
@@ -26,13 +26,13 @@
                             @if ($item['icon'])
                                 <x-core::icon :name="$item['icon']" />
                             @endif
-                            {{ __($item['name']) }}
+                            <span class="customer-account-sidebar__label">{{ __($item['name']) }}</span>
                         </a>
                     </li>
                 @endforeach
             </ul>
         </div>
-        <div class="col-md-9 customer-page">
+        <div class="col customer-page">
             <div class="customer-dashboard-container">
                 <div class="customer-dashboard-content">
                     @yield('content')
@@ -43,16 +43,17 @@
 </div>
 <script>
     (function () {
+        var sidebar = document.querySelector('[data-customer-account-sidebar]');
         var toggle = document.querySelector('[data-account-navigation-toggle]');
-        var navigation = document.getElementById('customer-dashboard-navigation');
-        if (!toggle || !navigation) return;
-        if (window.matchMedia('(max-width: 767px)').matches) {
-            navigation.hidden = true;
-            toggle.setAttribute('aria-expanded', 'false');
-        }
+        if (!toggle || !sidebar) return;
         toggle.addEventListener('click', function () {
-            navigation.hidden = !navigation.hidden;
-            toggle.setAttribute('aria-expanded', String(!navigation.hidden));
+            var expanded = sidebar.classList.toggle('is-expanded');
+            toggle.setAttribute('aria-expanded', String(expanded));
+        });
+        sidebar.addEventListener('mouseleave', function () {
+            if (!window.matchMedia('(hover: hover)').matches) return;
+            sidebar.classList.remove('is-expanded');
+            toggle.setAttribute('aria-expanded', 'false');
         });
     })();
 </script>
