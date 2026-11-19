@@ -83,11 +83,19 @@
                     <span>{{ __('Send enquiry') }}</span>
                 </button>
             </form>
+            <form action="{{ route('customer.messages.start', $product->store_id) }}" method="POST" class="sm-product-chat mt-2">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
+                <button type="submit" class="btn btn-outline-dark sm-product-enquiry__submit">
+                    <x-core::icon name="ti ti-messages" />
+                    <span>{{ __('Open chat') }}</span>
+                </button>
+            </form>
         @endif
     @else
         <a class="btn btn-primary sm-product-enquiry__submit mt-3" href="{{ route('customer.login') }}">
             <x-core::icon name="ti ti-messages" />
-            <span>{{ __('Sign in to send an enquiry') }}</span>
+            <span>{{ __('Sign in to chat with the supplier') }}</span>
         </a>
     @endauth
 @endif
