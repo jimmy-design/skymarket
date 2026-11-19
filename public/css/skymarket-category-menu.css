@@ -1,0 +1,173 @@
+/* Wide, viewport-fitted department trail for the Farmart header category menu. */
+@media (min-width: 992px) {
+    .header .menu--product-categories .menu__content {
+        left: 0;
+        right: auto;
+        width: calc(100vw - 40px);
+        max-width: calc(100vw - 40px);
+        padding-top: 8px;
+        border-top: 0;
+        overflow: visible;
+    }
+
+    .header .menu--product-categories .menu--dropdown {
+        width: 100%;
+        min-width: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #e7e9ed;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(20, 30, 45, .16);
+    }
+
+    .header .menu--product-categories .menu--dropdown > .sm-category-menu {
+        display: grid;
+        grid-template-columns: minmax(255px, 295px) minmax(0, 1fr);
+        gap: 0;
+        height: var(--sm-category-menu-height, min(68vh, 680px));
+        max-height: calc(100vh - 190px);
+        min-height: 360px;
+        padding: 0;
+        border: 0;
+        list-style: none;
+    }
+
+    .sm-category-menu__departments {
+        min-width: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 10px;
+        border-right: 1px solid #edf0f3;
+        background: #fafbfc;
+        scrollbar-width: thin;
+    }
+
+    .sm-category-menu__department {
+        display: grid;
+        grid-template-columns: 38px minmax(0, 1fr) 14px;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        margin: 2px 0;
+        padding: 5px 9px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: #26313f !important;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.25;
+        text-decoration: none;
+        transition: background .16s ease, border-color .16s ease, color .16s ease;
+    }
+
+    .sm-category-menu__department:hover,
+    .sm-category-menu__department:focus-visible,
+    .sm-category-menu__department.is-active {
+        border-color: #ffdfc4;
+        background: #fff3e9;
+        color: #d95f0b !important;
+    }
+
+    .sm-category-menu__art,
+    .sm-category-menu__item-art,
+    .sm-category-menu__leaf-art {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        object-fit: cover;
+        border-radius: 9px;
+        background: linear-gradient(145deg, #fff0e4, #f8e8d7);
+    }
+    .sm-category-menu [hidden] { display: none !important; }
+
+    .sm-category-menu__art { width: 38px; height: 38px; }
+    .sm-category-menu__art--emoji { font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; font-size: 22px; }
+    .sm-category-menu__arrow { color: #a3aab4; font-size: 21px; line-height: 1; }
+
+    .sm-category-menu__panels {
+        min-width: 0;
+        overflow: auto;
+        overscroll-behavior: contain;
+        padding: 19px 22px 22px;
+        scrollbar-width: thin;
+    }
+
+    .sm-category-menu__panel[hidden] { display: none !important; }
+    .sm-category-menu__panel-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 0 0 15px;
+        padding: 0 0 12px;
+        border-bottom: 1px solid #edf0f3;
+    }
+    .sm-category-menu__panel-heading a {
+        color: #222d3a !important;
+        font-size: 18px;
+        font-weight: 750;
+    }
+    .sm-category-menu__panel-heading span { color: #89919b; font-size: 12px; }
+
+    .sm-category-menu__category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+        align-content: start;
+        gap: 10px 18px;
+    }
+    .sm-category-menu__category {
+        min-width: 0;
+        padding: 10px 11px 8px;
+        border: 1px solid #f0f1f3;
+        border-radius: 10px;
+        background: #fff;
+    }
+    .sm-category-menu__category h3 {
+        margin: 0 0 7px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+    .sm-category-menu__category h3 a,
+    .sm-category-menu__category ul a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #293341 !important;
+        text-decoration: none;
+    }
+    .sm-category-menu__category h3 a:hover,
+    .sm-category-menu__category ul a:hover { color: #d95f0b !important; }
+    .sm-category-menu__item-art { width: 29px; height: 29px; }
+    .sm-category-menu__item-art--emoji { font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; font-size: 17px; }
+    .sm-category-menu__category ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+        gap: 2px 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .sm-category-menu__category ul a {
+        min-height: 27px;
+        color: #66717e !important;
+        font-size: 12px;
+        line-height: 1.25;
+    }
+    .sm-category-menu__leaf-art { width: 22px; height: 22px; border-radius: 6px; }
+    .sm-category-menu__leaf-art--emoji { font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; font-size: 14px; }
+    .sm-category-menu__empty { margin: 0; color: #7c8794; }
+}
+
+@media (max-width: 991.98px) {
+    .sm-category-menu { display: block; padding: 8px 12px !important; }
+    .sm-category-menu__departments { display: grid; gap: 3px; }
+    .sm-category-menu__department { display: flex; align-items: center; gap: 10px; padding: 7px 4px; color: #26313f; }
+    .sm-category-menu__art { width: 34px; height: 34px; object-fit: cover; border-radius: 8px; background: #fff0e4; }
+    .sm-category-menu__art--emoji { display: inline-flex; align-items: center; justify-content: center; font-size: 20px; }
+    .sm-category-menu [hidden] { display: none !important; }
+    .sm-category-menu__arrow { margin-left: auto; }
+    .sm-category-menu__panels { display: none; }
+}
