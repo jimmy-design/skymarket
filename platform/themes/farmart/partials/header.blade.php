@@ -776,7 +776,7 @@
 
     <style>
         .section-content.section-content__slider {
-            padding: 18px 15px 24px;
+            padding: 8px 15px 8px;
             background: #fff !important;
             background-image: none !important;
         }
@@ -832,7 +832,7 @@
         .section-content__slider .slick-dots .slick-active button { width: 24px; background: #ff811a; }
         .section-content__slider button:focus-visible { outline: 2px solid #f78120; outline-offset: 3px; }
         @media (max-width: 767px) {
-            .section-content.section-content__slider { padding: 8px 0 16px; }
+            .section-content.section-content__slider { padding: 4px 0 6px; }
             .section-content__slider .section-slides-wrapper { border-radius: 12px; }
             .section-content.section-content__slider .section-slides-wrapper .slick-slides-carousel:not(.slick-initialized),
             .section-content.section-content__slider .section-slides-wrapper .slide-item .slide-item__image {
