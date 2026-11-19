@@ -105,7 +105,8 @@
         .header-message-menu { position: relative; }
         .header-message-menu > summary { cursor: pointer; list-style: none; position: relative; }
         .header-message-menu > summary::-webkit-details-marker { display: none; }
-        .header-message-menu__trigger .ti { color: #273238; font-size: 24px; line-height: 1; }
+        .header-message-menu__trigger { align-items: center; background: rgba(255, 255, 255, .92); border: 2px solid rgba(255, 255, 255, .7); border-radius: 50%; color: #273238; cursor: pointer; display: inline-flex; height: 46px; justify-content: center; padding: 0; position: relative; width: 46px; }
+        .header-message-menu__trigger svg { height: 25px; width: 25px; }
         .header-message-menu[open] .header-message-menu__trigger { color: var(--primary-color); }
         .header-message-menu__panel {
             background: #fff; border: 1px solid #e8eaed; border-radius: 18px; box-shadow: 0 10px 30px rgba(20, 30, 40, .16);
@@ -128,7 +129,6 @@
         .header-message-menu__empty { color: #7a8085; font-size: 14px; padding: 24px 0; }
         .header-message-menu__more { background: #ff6a00; border-radius: 28px; color: #fff !important; display: block; font-size: 15px; font-weight: 600; margin-top: 6px; padding: 13px 18px; text-align: center; }
         .header-message-menu__more:hover { background: #ed6000; }
-        .header-quick-actions--guest .header-message-menu { display: none; }
 
         .header-quick-actions__item--notifications .header-quick-actions__icon {
             display: inline-flex;
@@ -295,6 +295,8 @@
                 height: 40px;
                 width: 40px;
             }
+
+            .header-message-menu__trigger { height: 40px; width: 40px; }
 
             .header-quick-actions__sell {
                 min-width: 120px;
@@ -1297,9 +1299,10 @@
                                             </svg>
                                         </span>
                                     </a>
+                                    @if ($headerCustomer)
                                     <details class="header-message-menu">
-                                        <summary class="header-quick-actions__item header-message-menu__trigger" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
-                                            <i class="ti ti-messages" aria-hidden="true"></i>
+                                        <summary class="header-message-menu__trigger" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
                                             @if ($headerCustomer)
                                                 <span class="header-quick-actions__badge" data-sm-unread data-url="{{ route('public.messaging.unread') }}" style="{{ $headerUnreadMessages ? '' : 'display:none' }}">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
                                             @endif
@@ -1329,6 +1332,11 @@
                                             <a class="header-message-menu__more" href="{{ $headerMessageUrl }}">{{ __('View more') }}</a>
                                         </div>
                                     </details>
+                                    @else
+                                        <a class="header-message-menu__trigger" href="{{ $headerLoginUrl }}" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
+                                        </a>
+                                    @endif
                                     <a
                                         class="header-quick-actions__item header-quick-actions__item--premium"
                                         href="{{ route('public.vendor-promotion-packages') }}"
