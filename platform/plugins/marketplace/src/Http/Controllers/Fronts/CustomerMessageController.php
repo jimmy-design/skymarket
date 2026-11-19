@@ -29,17 +29,19 @@ class CustomerMessageController extends BaseController
         SeoHelper::setTitle(__('Messages'));
         Theme::breadcrumb()->add(__('Messages'), route('customer.messages.index'));
 
-        $messages = Message::query()
-            ->where('customer_id', auth('customer')->id())
-            ->whereNull('parent_id')
-            ->with(['store', 'latestReply'])
-            ->withCount(['replies as unread_count' => fn ($query) => $query->where('sender_type', 'vendor')->whereNull('read_at')])
-            ->latest('updated_at')
-            ->paginate(10);
+        $conversations = $this->customerConversations();
+        $message = $conversations->first();
+
+        if ($message) {
+            $this->markConversationRead($message);
+            $conversations = $this->customerConversations();
+            $message = $conversations->first();
+            $message?->load('replies');
+        }
 
         return Theme::scope(
             'marketplace.customer-messages.index',
-            compact('messages'),
+            compact('conversations', 'message'),
             'plugins/marketplace::themes.customer-messages.index'
         )->render();
     }
@@ -99,18 +101,14 @@ class CustomerMessageController extends BaseController
         abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
 
         $message = $this->findConversation($id);
-
-        Message::query()
-            ->where('parent_id', $message->getKey())
-            ->where('sender_type', 'vendor')
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
+        $this->markConversationRead($message);
+        $conversations = $this->customerConversations();
 
         SeoHelper::setTitle(__('Conversation with :store', ['store' => $message->store?->name ?: __('Supplier')]));
 
         return Theme::scope(
             'marketplace.customer-messages.show',
-            compact('message'),
+            compact('message', 'conversations'),
             'plugins/marketplace::themes.customer-messages.show'
         )->render();
     }
@@ -149,5 +147,28 @@ class CustomerMessageController extends BaseController
             ->whereNull('parent_id')
             ->with(['store', 'replies'])
             ->findOrFail($id);
+    }
+
+    private function customerConversations()
+    {
+        return Message::query()
+            ->where('customer_id', auth('customer')->id())
+            ->whereNull('parent_id')
+            ->with(['store', 'latestReply'])
+            ->withCount(['replies as unread_count' => fn ($query) => $query->where('sender_type', 'vendor')->whereNull('read_at')])
+            ->latest('updated_at')
+            ->limit(50)
+            ->get();
+    }
+
+    private function markConversationRead(Message $message): void
+    {
+        Message::query()
+            ->where('parent_id', $message->getKey())
+            ->where('sender_type', 'vendor')
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        $message->load('replies');
     }
 }
