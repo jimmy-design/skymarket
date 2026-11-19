@@ -1302,7 +1302,7 @@
                                     @if ($headerCustomer)
                                     <details class="header-message-menu">
                                         <summary class="header-message-menu__trigger" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
+                                            <x-core::icon name="ti ti-messages" />
                                             @if ($headerCustomer)
                                                 <span class="header-quick-actions__badge" data-sm-unread data-url="{{ route('public.messaging.unread') }}" style="{{ $headerUnreadMessages ? '' : 'display:none' }}">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
                                             @endif
@@ -1334,7 +1334,7 @@
                                     </details>
                                     @else
                                         <a class="header-message-menu__trigger" href="{{ $headerLoginUrl }}" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
+                                            <x-core::icon name="ti ti-messages" />
                                         </a>
                                     @endif
                                     <a

@@ -1,6 +1,6 @@
 <aside class="sm-action-dock" aria-label="{{ __('Quick tools') }}">
     <a class="sm-action-dock__item" href="{{ auth('customer')->check() ? route('customer.messages.index') : route('customer.login') }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
+        <x-core::icon name="ti ti-messages" />
         <span>{{ __('Messages') }}</span>
     </a>
     <button class="sm-action-dock__item" type="button" data-sm-product-search>
