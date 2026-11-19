@@ -380,6 +380,10 @@
         </span>
     </div>
 
+    @if (is_plugin_active('marketplace') && MarketplaceHelper::isEnabledMessagingSystem())
+        @include(Theme::getThemeNamespace('partials.skymarket-messenger-dock'))
+    @endif
+
     <script>
         'use strict';
 
@@ -406,6 +410,12 @@
     </script>
 
     {!! Theme::footer() !!}
+    @if (is_plugin_active('marketplace') && MarketplaceHelper::isEnabledMessagingSystem())
+        <link rel="stylesheet" href="{{ asset('css/skymarket-messenger.css') }}?v={{ filemtime(public_path('css/skymarket-messenger.css')) }}">
+        <link rel="stylesheet" href="{{ asset('css/skymarket-messenger-dock.css') }}?v={{ filemtime(public_path('css/skymarket-messenger-dock.css')) }}">
+        <script src="{{ asset('js/skymarket-messenger.js') }}?v={{ filemtime(public_path('js/skymarket-messenger.js')) }}" defer></script>
+        <script src="{{ asset('js/skymarket-messenger-dock.js') }}?v={{ filemtime(public_path('js/skymarket-messenger-dock.js')) }}" defer></script>
+    @endif
     @if (is_plugin_active('marketplace') && auth('customer')->check())
         <script src="{{ asset('js/skymarket-inbox.js') }}?v={{ filemtime(public_path('js/skymarket-inbox.js')) }}" defer></script>
     @endif

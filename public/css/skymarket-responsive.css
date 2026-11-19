@@ -34,6 +34,9 @@ pre{max-width:100%;overflow:auto}
 .modal-content{min-width:0;max-width:100%}
 @media(min-width:992px){
  .header .header-middle .header-wrapper{padding-block:4px!important}
+ .header .header-bottom .navigation__center>.menu{flex-wrap:nowrap!important;column-gap:2px!important;row-gap:0!important}
+ .header .header-bottom .navigation__center>.menu>li{flex:0 0 auto;width:auto;max-width:none}
+ .header .header-bottom .navigation__center>.menu>li>a{padding:6px 4px!important;font-size:11px;white-space:nowrap!important;overflow-wrap:normal!important}
 }
 @media(min-width:1600px){
  .header .header-bottom .navigation__center>.menu{flex-wrap:nowrap!important;column-gap:4px!important;row-gap:0!important}

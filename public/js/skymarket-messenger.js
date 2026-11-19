@@ -1,6 +1,7 @@
 (function () {
     'use strict';
-    document.querySelectorAll('[data-sm-chat]').forEach(function (chat) {
+    function initializeMessenger(root) {
+    (root || document).querySelectorAll('[data-sm-chat]').forEach(function (chat) {
         if (chat.dataset.initialized) return;
         chat.dataset.initialized = '1';
         var log = chat.querySelector('[data-chat-messages]');
@@ -130,4 +131,8 @@
         log.scrollTop = log.scrollHeight;
         poll();
     });
+    }
+
+    window.SkymarketInitializeMessenger = initializeMessenger;
+    initializeMessenger(document);
 })();
