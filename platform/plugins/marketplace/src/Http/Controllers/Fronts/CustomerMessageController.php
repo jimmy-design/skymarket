@@ -46,23 +46,44 @@ class CustomerMessageController extends BaseController
         )->render();
     }
 
-    public function start(string $store, Request $request): RedirectResponse
+    public function start(string $store, Request $request, ?ConversationService $service = null): RedirectResponse
     {
         abort_unless(MarketplaceHelper::isEnabledMessagingSystem(), 404);
-        $request->validate(['product_id' => ['required', 'integer']]);
+        $service ??= app(ConversationService::class);
+        $data = $request->validate([
+            'product_id' => ['required', 'integer'],
+            'content' => ['nullable', 'string', 'max:2000', 'regex:/\S/u'],
+        ]);
         $supplier = Store::query()->wherePublished()->findOrFail($store);
         $customer = auth('customer')->user();
         abort_if((int) $supplier->customer_id === (int) $customer->id, 403);
         $product = Product::query()->wherePublished()->where('store_id', $supplier->id)
             ->where('is_variation', false)->findOrFail($request->input('product_id'));
-        $conversation = Cache::lock('marketplace:start:' . $customer->id . ':' . $supplier->id, 10)->block(5, function () use ($customer, $supplier, $product) {
-            return Message::query()->firstOrCreate([
+        $content = trim((string) ($data['content'] ?? ''));
+        $hasComposedContent = $content !== '';
+        if (! $hasComposedContent) {
+            $content = __('Hello, I have a question about :product.', ['product' => $product->name]) . "\n" . $product->url;
+        }
+
+        [$conversation, $created] = Cache::lock('marketplace:start:' . $customer->id . ':' . $supplier->id, 10)->block(5, function () use ($customer, $supplier, $content) {
+            $existing = Message::query()->where([
                 'customer_id' => $customer->id, 'store_id' => $supplier->id, 'parent_id' => null,
-            ], [
+            ])->first();
+
+            if ($existing) {
+                return [$existing, false];
+            }
+
+            return [Message::query()->create([
+                'customer_id' => $customer->id, 'store_id' => $supplier->id, 'parent_id' => null,
                 'sender_type' => 'customer', 'name' => $customer->name, 'email' => $customer->email,
-                'content' => __('Hello, I have a question about :product.', ['product' => $product->name]) . "\n" . $product->url,
-            ]);
+                'content' => $content,
+            ]), true];
         });
+
+        if (! $created && $hasComposedContent) {
+            $service->send($conversation, 'customer', $customer->name, $customer->email, $content, null);
+        }
 
         return redirect()->route('customer.messages.show', $conversation);
     }
