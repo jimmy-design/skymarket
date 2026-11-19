@@ -102,6 +102,34 @@
             position: relative;
         }
 
+        .header-message-menu { position: relative; }
+        .header-message-menu > summary { cursor: pointer; list-style: none; position: relative; }
+        .header-message-menu > summary::-webkit-details-marker { display: none; }
+        .header-message-menu__trigger .ti { color: #273238; font-size: 24px; line-height: 1; }
+        .header-message-menu[open] .header-message-menu__trigger { color: var(--primary-color); }
+        .header-message-menu__panel {
+            background: #fff; border: 1px solid #e8eaed; border-radius: 18px; box-shadow: 0 10px 30px rgba(20, 30, 40, .16);
+            max-height: min(520px, calc(100vh - 100px)); overflow-y: auto; padding: 20px 22px 18px; position: absolute; right: -120px; top: calc(100% + 14px);
+            width: min(570px, calc(100vw - 24px)); z-index: 1200;
+        }
+        .header-message-menu__panel::before { border-bottom: 10px solid #fff; border-left: 10px solid transparent; border-right: 10px solid transparent; content: ""; position: absolute; right: 136px; top: -9px; }
+        .header-message-menu__panel h3 { color: #292d31; font-size: 20px; font-weight: 700; margin: 0 0 10px; }
+        .header-message-menu__thread { align-items: center; color: inherit; display: flex; gap: 13px; min-height: 104px; padding: 12px 0; text-decoration: none !important; }
+        .header-message-menu__thread:hover { color: inherit; }
+        .header-message-menu__avatar { align-items: center; background: #ff9857; border-radius: 50%; color: #fff; display: inline-flex; flex: 0 0 58px; font-size: 25px; height: 58px; justify-content: center; }
+        .header-message-menu__details { display: block; min-width: 0; }
+        .header-message-menu__thread-heading { align-items: center; display: flex; gap: 10px; justify-content: space-between; }
+        .header-message-menu__thread-heading strong { color: #333; font-size: 16px; }
+        .header-message-menu__thread-heading time, .header-message-menu__company { color: #84888c; font-size: 12px; }
+        .header-message-menu__company, .header-message-menu__preview { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-message-menu__company { font-size: 13px; }
+        .header-message-menu__preview { color: #62666a; font-size: 14px; margin-top: 6px; max-width: 410px; }
+        .header-message-menu__unread { align-items: center; background: #e72e2e; border-radius: 50%; color: #fff; display: flex; flex: 0 0 25px; font-size: 12px; height: 25px; justify-content: center; }
+        .header-message-menu__empty { color: #7a8085; font-size: 14px; padding: 24px 0; }
+        .header-message-menu__more { background: #ff6a00; border-radius: 28px; color: #fff !important; display: block; font-size: 15px; font-weight: 600; margin-top: 6px; padding: 13px 18px; text-align: center; }
+        .header-message-menu__more:hover { background: #ed6000; }
+        .header-quick-actions--guest .header-message-menu { display: none; }
+
         .header-quick-actions__item--notifications .header-quick-actions__icon {
             display: inline-flex;
             height: 35px;
@@ -248,6 +276,13 @@
         .header-quick-actions__sell:hover {
             background: #f49326;
             color: #fff;
+        }
+
+        @media (max-width: 767px) {
+            .header-message-menu__panel { right: -6px; padding: 16px; }
+            .header-message-menu__panel::before { right: 22px; }
+            .header-message-menu__thread { min-height: 86px; }
+            .header-message-menu__avatar { flex-basis: 46px; height: 46px; }
         }
 
         @media (max-width: 1399px) {
@@ -1216,13 +1251,14 @@
                                         ? route('marketplace.vendor.messages.index')
                                         : ($headerCustomer ? route('customer.messages.index') : $headerLoginUrl);
                                     $headerUnreadMessages = 0;
+                                    $headerMessagePreview = collect();
 
                                     if ($headerCustomer) {
                                         $headerUnreadMessages = \Botble\Marketplace\Models\Message::query()
                                             ->when(
                                                 $headerIsVendor,
                                                 fn ($query) => $query
-                                                    ->where('store_id', $headerCustomer->store->id)
+                                                    ->where('store_id', $headerCustomer->store?->id ?: 0)
                                                     ->where('sender_type', 'customer'),
                                                 fn ($query) => $query
                                                     ->where('customer_id', $headerCustomer->id)
@@ -1230,6 +1266,21 @@
                                             )
                                             ->whereNull('read_at')
                                             ->count();
+
+                                        $headerMessagePreview = \Botble\Marketplace\Models\Message::query()
+                                            ->whereNull('parent_id')
+                                            ->when(
+                                                $headerIsVendor,
+                                                fn ($query) => $query->where('store_id', $headerCustomer->store?->id ?: 0),
+                                                fn ($query) => $query->where('customer_id', $headerCustomer->id)
+                                            )
+                                            ->with(['store', 'latestReply'])
+                                            ->withCount(['replies as unread_count' => fn ($query) => $query
+                                                ->where('sender_type', $headerIsVendor ? 'customer' : 'vendor')
+                                                ->whereNull('read_at')])
+                                            ->latest('updated_at')
+                                            ->limit(2)
+                                            ->get();
                                     }
                                 @endphp
                                 <nav class="header-quick-actions {{ $headerCustomer ? '' : 'header-quick-actions--guest' }}" aria-label="{{ __('Quick actions') }}">
@@ -1245,10 +1296,39 @@
                                                 <path d="M10 21h4" />
                                             </svg>
                                         </span>
-                                        @if ($headerCustomer)
-                                            <span class="header-quick-actions__badge" data-sm-unread data-url="{{ route('public.messaging.unread') }}" style="{{ $headerUnreadMessages ? '' : 'display:none' }}">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
-                                        @endif
                                     </a>
+                                    <details class="header-message-menu">
+                                        <summary class="header-quick-actions__item header-message-menu__trigger" title="{{ __('Messages') }}" aria-label="{{ __('Messages') }}">
+                                            <i class="ti ti-messages" aria-hidden="true"></i>
+                                            @if ($headerCustomer)
+                                                <span class="header-quick-actions__badge" data-sm-unread data-url="{{ route('public.messaging.unread') }}" style="{{ $headerUnreadMessages ? '' : 'display:none' }}">{{ $headerUnreadMessages > 99 ? '99+' : $headerUnreadMessages }}</span>
+                                            @endif
+                                        </summary>
+                                        <div class="header-message-menu__panel">
+                                            <h3>{{ __('Messages') }}</h3>
+                                            @forelse ($headerMessagePreview as $previewMessage)
+                                                @php
+                                                    $previewLastMessage = $previewMessage->latestReply ?: $previewMessage;
+                                                    $previewPartner = $headerIsVendor ? $previewMessage->name : ($previewMessage->store?->name ?: __('Supplier'));
+                                                    $previewUrl = $headerIsVendor
+                                                        ? route('marketplace.vendor.messages.show', $previewMessage)
+                                                        : route('customer.messages.show', $previewMessage);
+                                                @endphp
+                                                <a class="header-message-menu__thread" href="{{ $previewUrl }}">
+                                                    <span class="header-message-menu__avatar">{{ mb_substr($previewPartner, 0, 1) }}</span>
+                                                    <span class="header-message-menu__details">
+                                                        <span class="header-message-menu__thread-heading"><strong>{{ $previewPartner }}</strong><time>{{ BaseHelper::formatDateTime($previewLastMessage->created_at) }}</time></span>
+                                                        @if ($headerIsVendor && $previewMessage->store?->name)<span class="header-message-menu__company">{{ $previewMessage->store->name }}</span>@endif
+                                                        <span class="header-message-menu__preview">{{ Str::limit($previewLastMessage->content, 75) }}</span>
+                                                    </span>
+                                                    @if ($previewMessage->unread_count > 0)<span class="header-message-menu__unread">{{ $previewMessage->unread_count > 99 ? '99+' : $previewMessage->unread_count }}</span>@endif
+                                                </a>
+                                            @empty
+                                                <p class="header-message-menu__empty">{{ __('You have no conversations yet.') }}</p>
+                                            @endforelse
+                                            <a class="header-message-menu__more" href="{{ $headerMessageUrl }}">{{ __('View more') }}</a>
+                                        </div>
+                                    </details>
                                     <a
                                         class="header-quick-actions__item header-quick-actions__item--premium"
                                         href="{{ route('public.vendor-promotion-packages') }}"
