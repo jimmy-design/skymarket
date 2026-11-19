@@ -32,6 +32,14 @@ pre{max-width:100%;overflow:auto}
 .sm-chat__composer textarea{min-width:0}
 .modal-dialog{width:calc(100% - 24px)}
 .modal-content{min-width:0;max-width:100%}
+@media(min-width:992px){
+ .header .header-middle .header-wrapper{padding-block:14px!important}
+}
+@media(min-width:1600px){
+ .header .header-bottom .navigation__center>.menu{flex-wrap:nowrap!important;column-gap:4px!important;row-gap:0!important}
+ .header .header-bottom .navigation__center>.menu>li{flex:0 0 auto;width:auto;max-width:none}
+ .header .header-bottom .navigation__center>.menu>li>a{padding:7px 7px!important;font-size:12px;white-space:nowrap!important;overflow-wrap:normal!important}
+}
 @media(min-width:1200px){
  .header .header-middle .header-wrapper{gap:16px}
  .header .header-middle .header__left{flex:0 1 240px;max-width:23%}
