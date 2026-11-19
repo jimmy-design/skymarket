@@ -1,6 +1,7 @@
 @php
     $isVendor = $viewer === 'vendor';
     $partner = $isVendor ? $message->name : ($message->store?->name ?: __('Supplier'));
+    $partnerStore = $isVendor ? null : $message->store;
     $items = collect([$message])->merge($message->replies)->sortBy('id');
     $routePrefix = $isVendor ? 'marketplace.vendor.messages.' : 'customer.messages.';
 @endphp
@@ -8,8 +9,12 @@
 <section class="sm-chat" data-sm-chat data-stream="{{ route($routePrefix . 'stream', $message) }}" data-viewer="{{ $viewer }}" data-partner="{{ $partner }}" data-you="{{ __('You') }}" data-last-id="{{ $items->max('id') }}">
     <header class="sm-chat__header">
         <a href="{{ route($routePrefix . 'index') }}" class="sm-chat__back" aria-label="{{ __('Back to messages') }}">←</a>
-        <span class="sm-avatar" aria-hidden="true">{{ mb_substr($partner, 0, 1) }}</span>
-        <div><h2>{{ $partner }}</h2><span class="sm-chat__status" data-chat-status role="status">{{ __('Connecting…') }}</span></div>
+        @if ($partnerStore?->logo_url)
+            <img class="sm-avatar sm-avatar--image" src="{{ $partnerStore->logo_url }}" alt="{{ $partner }}">
+        @else
+            <span class="sm-avatar" aria-hidden="true">{{ mb_substr($partner, 0, 1) }}</span>
+        @endif
+        <div><h2>{{ $partner }} @if ($partnerStore) @include(Theme::getThemeNamespace('partials.marketplace.verified-badge'), ['customer' => $partnerStore->customer]) @endif</h2><span class="sm-chat__status" data-chat-status role="status">{{ __('Connecting…') }}</span></div>
         @if ($message->store)<a class="sm-text-link ms-auto" href="{{ $message->store->url }}">{{ __('View supplier') }} ↗</a>@endif
     </header>
     <div class="sm-chat__notice">{{ __('Keep product details, agreed prices and delivery arrangements in this conversation. Never share passwords or payment PINs.') }}</div>

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/skymarket-customer-messenger.css') }}?v={{ filemtime(public_path('css/skymarket-customer-messenger.css')) }}">
 
-<section class="sm-customer-messenger" aria-label="{{ __('Messages') }}">
+<section class="sm-customer-messenger" data-sm-account-messenger-fit aria-label="{{ __('Messages') }}">
     <aside class="sm-customer-messenger__inbox">
         <header class="sm-customer-messenger__inbox-header">
             <h1>{{ __('Messages') }}</h1>
@@ -26,9 +26,13 @@
                    data-sm-account-message-thread
                    data-unread="{{ $conversation->unread_count > 0 ? 'true' : 'false' }}"
                    data-search="{{ Str::lower($partner . ' ' . $lastMessage->content) }}">
-                    <span class="sm-customer-thread__avatar" aria-hidden="true">{{ mb_substr($partner, 0, 1) }}</span>
+                    @if ($conversation->store?->logo_url)
+                        <img class="sm-customer-thread__avatar" src="{{ $conversation->store->logo_url }}" alt="{{ $partner }}">
+                    @else
+                        <span class="sm-customer-thread__avatar" aria-hidden="true">{{ mb_substr($partner, 0, 1) }}</span>
+                    @endif
                     <span class="sm-customer-thread__details">
-                        <span class="sm-customer-thread__heading"><strong>{{ $partner }}</strong><time>{{ BaseHelper::formatDateTime($lastMessage->created_at) }}</time></span>
+                        <span class="sm-customer-thread__heading"><strong>{{ $partner }} @include(Theme::getThemeNamespace('partials.marketplace.verified-badge'), ['customer' => $conversation->store?->customer])</strong><time>{{ BaseHelper::formatDateTime($lastMessage->created_at) }}</time></span>
                         <span class="sm-customer-thread__preview">{{ Str::limit($lastMessage->content, 100) }}</span>
                     </span>
                     @if ($conversation->unread_count > 0)<span class="sm-customer-thread__unread" aria-label="{{ __('Unread messages') }}"></span>@endif
@@ -54,6 +58,15 @@
 
 <script>
     (function () {
+        var messenger = document.querySelector('[data-sm-account-messenger-fit]');
+        function fitMessenger() {
+            if (!messenger) return;
+            var available = window.innerHeight - messenger.getBoundingClientRect().top - 16;
+            messenger.style.height = Math.max(320, available) + 'px';
+        }
+        fitMessenger();
+        window.addEventListener('resize', fitMessenger, { passive: true });
+
         var input = document.querySelector('[data-sm-account-message-filter]');
         var filter = 'all';
         var threads = document.querySelectorAll('[data-sm-account-message-thread]');
