@@ -776,7 +776,7 @@
 
     <style>
         .section-content.section-content__slider {
-            padding: 8px 15px 8px;
+            padding: 4px 12px 4px;
             background: #fff !important;
             background-image: none !important;
         }
@@ -786,7 +786,7 @@
             border-radius: 18px;
             background: #fff;
             box-shadow: 0 8px 28px rgba(30, 45, 52, .06);
-            padding: 0 0 44px;
+            padding: 0 0 38px;
             overflow: hidden;
         }
         .section-content.section-content__slider .section-slides-wrapper .slick-slides-carousel:not(.slick-initialized),
@@ -832,7 +832,7 @@
         .section-content__slider .slick-dots .slick-active button { width: 24px; background: #ff811a; }
         .section-content__slider button:focus-visible { outline: 2px solid #f78120; outline-offset: 3px; }
         @media (max-width: 767px) {
-            .section-content.section-content__slider { padding: 4px 0 6px; }
+            .section-content.section-content__slider { padding: 2px 0 4px; }
             .section-content__slider .section-slides-wrapper { border-radius: 12px; }
             .section-content.section-content__slider .section-slides-wrapper .slick-slides-carousel:not(.slick-initialized),
             .section-content.section-content__slider .section-slides-wrapper .slide-item .slide-item__image {
