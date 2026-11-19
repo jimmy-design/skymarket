@@ -56,7 +56,6 @@ class CustomerMessageController extends BaseController
         ]);
         $supplier = Store::query()->wherePublished()->findOrFail($store);
         $customer = auth('customer')->user();
-        abort_if((int) $supplier->customer_id === (int) $customer->id, 403);
         $product = Product::query()->wherePublished()->where('store_id', $supplier->id)
             ->where('is_variation', false)->findOrFail($request->input('product_id'));
         $content = trim((string) ($data['content'] ?? ''));
