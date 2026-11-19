@@ -3,6 +3,7 @@
     $phone = $store->phone ?: $store->customer?->phone;
     $email = $store->email ?: $store->customer?->email;
     $isCustomerLoggedIn = auth('customer')->check();
+    $messagingEnabled = is_plugin_active('marketplace') && MarketplaceHelper::isEnabledMessagingSystem();
     $phoneDigits = preg_replace('/\D+/', '', (string) $phone);
 
     if (strlen($phoneDigits) === 12 && str_starts_with($phoneDigits, '254')) {
@@ -37,6 +38,10 @@
     #product-vendor-card .vendor-card__button { align-items:center; border:1px solid #f68b1e; border-radius:6px; color:#d76d09; display:flex; font-size:12px; font-weight:800; justify-content:center; min-height:38px; padding:7px 8px; text-align:center }
     #product-vendor-card .vendor-card__button--primary { background:#f68b1e; color:#fff }
     #product-vendor-card .vendor-card__button:hover { background:#df7610; border-color:#df7610; color:#fff }
+    #product-vendor-card .vendor-card__chat-form { grid-column:1/-1; margin:0 }
+    #product-vendor-card .vendor-card__button--chat { background:#263238; border-color:#263238; color:#fff; gap:8px; grid-column:1/-1; width:100% }
+    #product-vendor-card .vendor-card__button--chat svg { height:19px; width:19px }
+    #product-vendor-card .vendor-card__button--chat:hover { background:#11191d; border-color:#11191d; color:#fff }
 </style>
 
 <aside id="product-vendor-card" aria-label="{{ __('Vendor information') }}">
@@ -82,6 +87,23 @@
             <a class="vendor-card__button vendor-card__button--primary" href="{{ $isCustomerLoggedIn ? 'tel:' . $phone : route('customer.login') }}">
                 {{ $isCustomerLoggedIn ? __('Call vendor') : __('View contact') }}
             </a>
+        @endif
+        @if ($messagingEnabled && (!$isCustomerLoggedIn || (int) $store->customer_id !== (int) auth('customer')->id()))
+            @auth('customer')
+                <form class="vendor-card__chat-form" action="{{ route('customer.messages.start', $store->id) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
+                    <button class="vendor-card__button vendor-card__button--chat" type="submit">
+                        <x-core::icon name="ti ti-messages" />
+                        <span>{{ __('Chat with seller') }}</span>
+                    </button>
+                </form>
+            @else
+                <a class="vendor-card__button vendor-card__button--chat" href="{{ route('customer.login') }}">
+                    <x-core::icon name="ti ti-messages" />
+                    <span>{{ __('Sign in to chat with seller') }}</span>
+                </a>
+            @endauth
         @endif
     </div>
 </aside>

@@ -412,7 +412,6 @@
     {!! Theme::footer() !!}
     @if (is_plugin_active('marketplace') && MarketplaceHelper::isEnabledMessagingSystem())
         <link rel="stylesheet" href="{{ asset('css/skymarket-messenger-dock.css') }}?v={{ filemtime(public_path('css/skymarket-messenger-dock.css')) }}">
-        <link rel="stylesheet" href="{{ asset('css/skymarket-product-enquiry.css') }}?v={{ filemtime(public_path('css/skymarket-product-enquiry.css')) }}">
         <script src="{{ asset('js/skymarket-messenger-dock.js') }}?v={{ filemtime(public_path('js/skymarket-messenger-dock.js')) }}" defer></script>
     @endif
     @if (is_plugin_active('marketplace') && auth('customer')->check())

@@ -70,32 +70,3 @@
         </div>
     @endif
 </form>
-@if (!empty($withEnquiry) && is_plugin_active('marketplace') && $product->store?->exists && MarketplaceHelper::isEnabledMessagingSystem())
-    @auth('customer')
-        @if ((int) $product->store->customer_id !== (int) auth('customer')->id())
-            <form action="{{ route('customer.messages.start', $product->store_id) }}" method="POST" class="sm-product-enquiry mt-3">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
-                <label class="sm-product-enquiry__label" for="sm-product-enquiry-message">{{ __('Message the supplier about this product') }}</label>
-                <textarea id="sm-product-enquiry-message" name="content" rows="3" maxlength="2000" required placeholder="{{ __('Ask about price, availability, or delivery…') }}">{{ old('content') }}</textarea>
-                <button type="submit" class="btn btn-primary sm-product-enquiry__submit">
-                    <x-core::icon name="ti ti-messages" />
-                    <span>{{ __('Send enquiry') }}</span>
-                </button>
-            </form>
-            <form action="{{ route('customer.messages.start', $product->store_id) }}" method="POST" class="sm-product-chat mt-2">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->original_product->id }}">
-                <button type="submit" class="btn btn-outline-dark sm-product-enquiry__submit">
-                    <x-core::icon name="ti ti-messages" />
-                    <span>{{ __('Open chat') }}</span>
-                </button>
-            </form>
-        @endif
-    @else
-        <a class="btn btn-primary sm-product-enquiry__submit mt-3" href="{{ route('customer.login') }}">
-            <x-core::icon name="ti ti-messages" />
-            <span>{{ __('Sign in to chat with the supplier') }}</span>
-        </a>
-    @endauth
-@endif

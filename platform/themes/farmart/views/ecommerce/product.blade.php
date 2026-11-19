@@ -106,7 +106,6 @@
                                 'withButtons' => true,
                                 'withVariations' => true,
                                 'withProductOptions' => true,
-                                'withEnquiry' => true,
                                 'wishlistIds' => \Theme\Farmart\Supports\Wishlist::getWishlistIds([$product->id]),
                                 'withBuyNow' => true,
                             ],

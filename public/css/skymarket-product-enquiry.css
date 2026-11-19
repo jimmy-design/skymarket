@@ -1,6 +1,0 @@
-.sm-product-enquiry { display: grid; gap: 9px; max-width: 620px; }
-.sm-product-enquiry__label { color: #26313b; font-size: 14px; font-weight: 600; }
-.sm-product-enquiry textarea { background: #fff; border: 1px solid #d8dde1; border-radius: 9px; color: #26313b; min-height: 76px; padding: 11px 13px; resize: vertical; width: 100%; }
-.sm-product-enquiry textarea:focus { border-color: #f47b20; box-shadow: 0 0 0 3px rgba(244, 123, 32, .13); outline: 0; }
-.sm-product-enquiry__submit { align-items: center; display: inline-flex; gap: 8px; justify-content: center; width: fit-content; }
-.sm-product-enquiry__submit svg { height: 20px; width: 20px; }
