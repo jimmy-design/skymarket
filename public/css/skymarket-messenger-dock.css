@@ -2,7 +2,7 @@
 .sm-messenger-window { z-index: 1090; }
 .sm-action-dock {
     position: fixed;
-    left: 18px;
+    right: 18px;
     bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -46,7 +46,7 @@
 .sm-messenger-window[hidden] { display: none !important; }
 .sm-messenger-window {
     position: fixed;
-    left: 138px;
+    right: 138px;
     bottom: 20px;
     display: flex;
     width: min(1020px, calc(100vw - 160px));
@@ -129,10 +129,10 @@
 .sm-messenger-window .sm-chat__composer textarea { min-height: 54px; }
 .sm-messenger-window .sm-chat__back { display: none; }
 @media (max-width: 767px) {
-    .sm-action-dock { left: 10px; bottom: 10px; width: auto; flex-direction: row; padding: 3px 6px; }
+    .sm-action-dock { right: 10px; bottom: 10px; width: auto; flex-direction: row; padding: 3px 6px; }
     .sm-action-dock__item { min-width: 66px; min-height: 58px; padding: 3px 5px; border-right: 1px solid #e4e4e4; border-bottom: 0; font-size: 10px; }
     .sm-action-dock__item svg { width: 20px; height: 20px; }
-    .sm-messenger-window { left: 8px; right: 8px; bottom: 78px; width: auto; height: min(72vh, 620px); min-height: 330px; border-radius: 13px; }
+    .sm-messenger-window { right: 8px; bottom: 78px; width: auto; height: min(72vh, 620px); min-height: 330px; border-radius: 13px; }
     .sm-messenger-window__header { min-height: 52px; padding: 8px 10px; gap: 8px; }
     .sm-messenger-window__header span { display: none; }
     .sm-messenger-window__body { grid-template-columns: minmax(0, 1fr); }

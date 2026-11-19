@@ -1,9 +1,9 @@
 <aside class="sm-action-dock" aria-label="Quick tools">
     @if (auth('customer')->check())
-        <button class="sm-action-dock__item" type="button" data-sm-messenger-open aria-expanded="false" aria-controls="sm-messenger-window">
+        <a class="sm-action-dock__item" href="{{ route('customer.messages.index') }}">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
             <span>{{ __('Messenger') }}</span>
-        </button>
+        </a>
     @else
         <a class="sm-action-dock__item" href="{{ route('customer.login') }}">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3v-15Z"/><path d="M8 9h8M8 12.5h6"/></svg>
