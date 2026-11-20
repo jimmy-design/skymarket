@@ -24,6 +24,14 @@ pre{max-width:100%;overflow:auto}
 .header .sub-menu{max-width:min(360px,calc(100vw - 24px))}
 .header-account-menu__dropdown,.mini-cart-content{max-width:calc(100vw - 24px)}
 .slick-slider,.slick-list{min-width:0;max-width:100%}
+.section-content.section-content__slider .section-slides-wrapper{width:100%;max-width:100%}
+@media(min-width:768px){
+ .section-content.section-content__slider .section-slides-wrapper .slide-item,
+ .section-content.section-content__slider .section-slides-wrapper .slide-item__image{width:100%;height:28vw;max-height:380px;min-height:0}
+ .section-content.section-content__slider .section-slides-wrapper .slide-item__image>a,
+ .section-content.section-content__slider .section-slides-wrapper .slide-item__image>picture{display:block;width:100%;height:100%}
+ .section-content.section-content__slider .section-slides-wrapper .slide-item__image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+}
 .sm-reference-grid,.sm-reference-grid>.col,.sm-item,.sm-item .product-details,.sm-message__bubble,.sm-chat__composer{min-width:0;max-width:100%}
 .sm-chat__header>div{min-width:0}
 .sm-chat__header h2{overflow-wrap:anywhere}
