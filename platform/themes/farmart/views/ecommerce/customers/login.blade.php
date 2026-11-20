@@ -45,7 +45,7 @@
                     <span>{{ __('Google') }}</span>
                 </a>
             </div>
-            <p class="auth-register-link">{{ __('Don’t have an account?') }} <a href="{{ route('customer.register') }}">{{ __('Register') }}</a></p>
+            <p class="auth-register-link">{{ __("Don't have an account?") }} <a href="{{ route('customer.register') }}">{{ __("Register") }}</a></p>
             <p class="auth-screen__legal">{{ __('Your account helps you keep track of orders and discover more.') }}</p>
         </section>
         <aside class="auth-screen__visual" aria-label="{{ __('People collaborating around a table') }}">
@@ -66,6 +66,7 @@
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }
         body.auth-fullscreen-page .auth-screen__form > .container { margin: 0 auto; max-width: var(--auth-content-width); padding-left: 0; padding-right: 0; width: var(--auth-content-width); }
         body.auth-fullscreen-page .auth-screen__form .container > .row { margin-left: 0 !important; margin-right: 0 !important; width: 100% !important; }
+        body.auth-fullscreen-page .auth-screen__form .container > .row.justify-content-center.py-5 { padding-bottom: 0 !important; padding-top: 0 !important; }
         body.auth-fullscreen-page .auth-screen__form .container > .row > .col-xl-6 { flex: 0 0 100% !important; max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; width: 100% !important; }
         body.auth-fullscreen-page .auth-screen__form .auth-card { max-width: none !important; width: 100% !important; }
         body.auth-fullscreen-page .auth-card__banner, body.auth-fullscreen-page .auth-card__header-icon { display: none !important; }
@@ -109,6 +110,17 @@
         body.auth-fullscreen-page .auth-screen__quote span { color: #716a5f; font-size: 13px; line-height: 1.55; }
         @media (max-width: 900px) { body.auth-fullscreen-page .auth-screen { display: flex; height: calc(100vh - 16px); justify-content: center; margin: 8px; padding: 8px; } body.auth-fullscreen-page .auth-screen__form { max-width: 560px; padding: 18px 24px; } body.auth-fullscreen-page .auth-screen__visual { display: none; } }
         @media (max-width: 640px) { body.auth-fullscreen-page .auth-screen { height: calc(100dvh - 16px); margin: 8px; padding: 8px; } body.auth-fullscreen-page .auth-screen__form { max-width: 520px; padding: 14px 18px; } body.auth-fullscreen-page .auth-brand { margin-bottom: 16px; } }
+        @media (max-height: 860px) {
+            body.auth-fullscreen-page .auth-screen__form { padding-bottom: 10px; padding-top: 10px; }
+            body.auth-fullscreen-page .auth-brand { margin-bottom: 20px; }
+            body.auth-fullscreen-page .auth-card__header { margin-bottom: 12px; }
+            body.auth-fullscreen-page .auth-card .form-group { margin-bottom: 7px !important; }
+            body.auth-fullscreen-page .auth-card .form-control { min-height: 38px; }
+            body.auth-fullscreen-page .auth-card .btn-auth-submit { min-height: 42px; }
+            body.auth-fullscreen-page .auth-social-buttons { margin-top: 8px; }
+            body.auth-fullscreen-page .auth-register-link { margin-top: 9px; }
+            body.auth-fullscreen-page .auth-screen__legal { margin-top: 9px; }
+        }
     </style>
 </body>
 </html>
