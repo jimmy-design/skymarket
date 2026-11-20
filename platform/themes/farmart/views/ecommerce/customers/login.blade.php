@@ -34,7 +34,7 @@
         body.auth-fullscreen-page { background: #fff8e9; color: #28251f; font-family: inherit; overflow: hidden; }
         body.auth-fullscreen-page > *:not(.auth-screen) { display: none !important; }
         body.auth-fullscreen-page .auth-screen { align-items: stretch; background: linear-gradient(130deg, #fffdf7 0%, #fff4d6 48%, #ffe7b1 100%); border-radius: 32px; display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: calc(100vh - 20px); margin: 10px; min-height: 0; padding: 10px; }
-        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 410px; padding: 20px 24px; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 540px; padding: 20px 30px; width: 100%; }
         body.auth-fullscreen-page .auth-brand { align-items: center; color: #28251f; display: inline-flex; font-size: 18px; font-weight: 650; letter-spacing: -.04em; margin-bottom: 28px; text-decoration: none; }
         body.auth-fullscreen-page .auth-brand img { max-height: 38px; max-width: 150px; object-fit: contain; }
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }

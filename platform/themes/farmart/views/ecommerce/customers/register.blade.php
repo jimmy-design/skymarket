@@ -34,7 +34,7 @@
         body.auth-fullscreen-page { background: #fff8e9; color: #28251f; font-family: inherit; overflow: hidden; }
         body.auth-fullscreen-page > *:not(.auth-screen) { display: none !important; }
         body.auth-fullscreen-page .auth-screen { align-items: stretch; background: linear-gradient(130deg, #fffdf7 0%, #fff4d6 48%, #ffe7b1 100%); border-radius: 32px; display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: calc(100vh - 20px); margin: 10px; min-height: 0; padding: 10px; }
-        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 410px; padding: 20px 24px; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 680px; padding: 20px 30px; width: 100%; }
         body.auth-fullscreen-page .auth-brand { align-items: center; color: #28251f; display: inline-flex; font-size: 18px; font-weight: 650; letter-spacing: -.04em; margin-bottom: 28px; text-decoration: none; }
         body.auth-fullscreen-page .auth-brand img { max-height: 38px; max-width: 150px; object-fit: contain; }
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }
@@ -60,18 +60,20 @@
         body.auth-fullscreen-page .auth-screen__quote span { color: #716a5f; font-size: 13px; line-height: 1.55; }
         @media (max-width: 900px) { body.auth-fullscreen-page .auth-screen { display: flex; height: calc(100vh - 16px); justify-content: center; margin: 8px; padding: 8px; } body.auth-fullscreen-page .auth-screen__form { max-width: 640px; padding: 18px 24px; } body.auth-fullscreen-page .auth-screen__visual { display: none; } }
         @media (max-width: 640px) { body.auth-fullscreen-page .auth-screen { height: calc(100dvh - 16px); margin: 8px; padding: 8px; } body.auth-fullscreen-page .auth-screen__form { max-width: 560px; padding: 12px 16px; } body.auth-fullscreen-page .auth-brand { margin-bottom: 14px; } }
-            body.auth-register-page .auth-screen__form { max-width: 640px; }
+        body.auth-register-page .auth-screen__form { max-width: 680px; }
         body.auth-register-page .auth-brand { margin-bottom: 18px; }
         body.auth-register-page .auth-card__header { margin-bottom: 13px; }
         body.auth-register-page .auth-card__header-title { font-size: clamp(25px, 2.3vw, 31px); }
-        body.auth-register-page .auth-card form { display: grid; gap: 0 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        body.auth-register-page .auth-card form { column-gap: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2px; width: 100%; }
         body.auth-register-page .auth-card form > * { grid-column: span 1; min-width: 0; }
         body.auth-register-page .auth-card form .form-control { max-width: 100%; }
         body.auth-register-page .auth-card form > .form-group,
         body.auth-register-page .auth-card form > .mb-3 { margin-bottom: 8px !important; min-width: 0; }
         body.auth-register-page .auth-card form > :has([name="agree_terms_and_policy"]),
         body.auth-register-page .auth-card form > :has(.btn-auth-submit),
-        body.auth-register-page .auth-card form > :has(a[href*="login"]) { grid-column: 1 / -1; }
+        body.auth-register-page .auth-card form > :has(a[href*="login"]),
+        body.auth-register-page .auth-card form > :has(button[type="submit"]),
+        body.auth-register-page .auth-card form > :has(input[type="submit"]) { grid-column: 1 / -1; }
         body.auth-register-page .auth-card form .form-check { align-items: flex-start; display: flex; gap: 7px; margin: 0; }
         body.auth-register-page .auth-card form .form-check-label { font-size: 11px; line-height: 1.35; }
         body.auth-register-page .auth-card .btn-auth-submit { border-radius: 24px; min-height: 42px; }
