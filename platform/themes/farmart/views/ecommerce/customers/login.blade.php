@@ -60,14 +60,14 @@
         body.auth-fullscreen-page { background: #fff8e9; color: #28251f; font-family: inherit; overflow: hidden; }
         body.auth-fullscreen-page > *:not(.auth-screen) { display: none !important; }
         body.auth-fullscreen-page .auth-screen { align-items: stretch; background: linear-gradient(145deg, #e8e9e9 0%, #f5f0df 48%, #fff0c9 100%); border-radius: 32px; display: grid; gap: 18px; grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); height: calc(100vh - 20px); margin: 10px; min-height: 0; padding: 10px; }
-        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 540px; padding: 20px 42px; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form { --auth-content-width: min(100%, 430px); align-self: center; justify-self: center; max-width: 540px; padding: 20px 42px; width: 100%; }
         body.auth-fullscreen-page .auth-brand { align-items: center; border: 1px solid rgba(50,50,50,.25); border-radius: 999px; color: #28251f; display: inline-flex; font-size: 14px; font-weight: 550; letter-spacing: -.02em; margin-bottom: 44px; padding: 7px 16px; text-decoration: none; }
         body.auth-fullscreen-page .auth-brand img { max-height: 38px; max-width: 150px; object-fit: contain; }
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }
-        body.auth-fullscreen-page .auth-screen__form .container { margin: 0; max-width: none; padding-left: 0; padding-right: 0; width: 100%; }
-        body.auth-fullscreen-page .auth-screen__form .container > .row { margin-left: 0; margin-right: 0; width: 100%; }
-        body.auth-fullscreen-page .auth-screen__form .container > .row > .col-xl-6 { flex: 0 0 100%; max-width: 100%; padding-left: 0; padding-right: 0; width: 100%; }
-        body.auth-fullscreen-page .auth-screen__form .auth-card { max-width: none; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form > .container { margin: 0 auto; max-width: var(--auth-content-width); padding-left: 0; padding-right: 0; width: var(--auth-content-width); }
+        body.auth-fullscreen-page .auth-screen__form .container > .row { margin-left: 0 !important; margin-right: 0 !important; width: 100% !important; }
+        body.auth-fullscreen-page .auth-screen__form .container > .row > .col-xl-6 { flex: 0 0 100% !important; max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; width: 100% !important; }
+        body.auth-fullscreen-page .auth-screen__form .auth-card { max-width: none !important; width: 100% !important; }
         body.auth-fullscreen-page .auth-card__banner, body.auth-fullscreen-page .auth-card__header-icon { display: none !important; }
         body.auth-fullscreen-page .auth-card .card-header, body.auth-fullscreen-page .auth-card .card-body { background: transparent !important; border: 0; padding: 0 !important; }
         body.auth-fullscreen-page .auth-card__header { margin-bottom: 20px; }
@@ -75,15 +75,15 @@
         body.auth-fullscreen-page .auth-card__header-description { color: #777064; margin: 0; }
         body.auth-fullscreen-page .auth-card .form-label { color: #625c50; font-size: 12px; font-weight: 500; margin-bottom: 4px; }
         body.auth-fullscreen-page .auth-card .form-group { margin-bottom: 11px !important; }
-        body.auth-fullscreen-page .auth-card form, body.auth-fullscreen-page .auth-card .form-group, body.auth-fullscreen-page .auth-card .position-relative { max-width: 100%; width: 100%; }
-        body.auth-fullscreen-page .auth-card form > * { box-sizing: border-box; max-width: none; width: 100%; }
-        body.auth-fullscreen-page .auth-card .form-control { background: rgba(255,255,255,.86); border: 1px solid rgba(120,99,61,.12); border-radius: 22px; font-size: 13px; min-height: 42px; padding: 9px 16px; width: 100%; }
+        body.auth-fullscreen-page .auth-card form, body.auth-fullscreen-page .auth-card .form-group, body.auth-fullscreen-page .auth-card .position-relative { max-width: 100% !important; width: 100% !important; }
+        body.auth-fullscreen-page .auth-card form > * { box-sizing: border-box; max-width: 100% !important; width: 100% !important; }
+        body.auth-fullscreen-page .auth-card .form-control { background: rgba(255,255,255,.86); border: 1px solid rgba(120,99,61,.12); border-radius: 22px; font-size: 13px; min-height: 42px; max-width: 100% !important; padding: 9px 16px; width: 100% !important; }
         body.auth-fullscreen-page .auth-card .form-control:focus { border-color: #e4ae3e; box-shadow: 0 0 0 3px rgba(228,174,62,.17) !important; }
         body.auth-fullscreen-page .auth-card .btn-auth-submit { background: linear-gradient(100deg, #ffdc68 0%, #ffc74c 100%); border: 0; border-radius: 24px; color: #35290e; font-size: 14px; font-weight: 650; min-height: 46px; width: 100%; }
         body.auth-fullscreen-page .auth-screen__form--login .auth-card__header { text-align: center; }
         body.auth-fullscreen-page .auth-screen__form--login .auth-card form > :has(a[href*="register"]) { display: none !important; }
         body.auth-fullscreen-page .auth-screen__form--login .card-social-login-container { display: none !important; }
-        body.auth-fullscreen-page .auth-social-buttons { display: flex; gap: 10px; margin-top: 12px; width: 100%; }
+        body.auth-fullscreen-page .auth-social-buttons { display: flex; gap: 10px; margin: 12px auto 0; max-width: var(--auth-content-width); width: var(--auth-content-width); }
         body.auth-fullscreen-page .auth-social-button { align-items: center; background: rgba(255,255,255,.42); border: 1px solid rgba(92,77,49,.22); border-radius: 999px; color: #302d27 !important; display: inline-flex; flex: 1 1 0; font-size: 12px; font-weight: 500; gap: 8px; justify-content: center; min-height: 42px; padding: 7px 12px; text-decoration: none; transition: background .15s ease, border-color .15s ease; }
         body.auth-fullscreen-page .auth-social-button:hover { background: rgba(255,255,255,.9); border-color: rgba(92,77,49,.38); }
         body.auth-fullscreen-page .auth-social-button svg { flex: 0 0 17px; height: 17px; width: 17px; }
