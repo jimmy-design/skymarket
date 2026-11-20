@@ -64,6 +64,10 @@
         body.auth-fullscreen-page .auth-brand { align-items: center; border: 1px solid rgba(50,50,50,.25); border-radius: 999px; color: #28251f; display: inline-flex; font-size: 14px; font-weight: 550; letter-spacing: -.02em; margin-bottom: 44px; padding: 7px 16px; text-decoration: none; }
         body.auth-fullscreen-page .auth-brand img { max-height: 38px; max-width: 150px; object-fit: contain; }
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }
+        body.auth-fullscreen-page .auth-screen__form .container { margin: 0; max-width: none; padding-left: 0; padding-right: 0; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form .container > .row { margin-left: 0; margin-right: 0; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form .container > .row > .col-xl-6 { flex: 0 0 100%; max-width: 100%; padding-left: 0; padding-right: 0; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form .auth-card { max-width: none; width: 100%; }
         body.auth-fullscreen-page .auth-card__banner, body.auth-fullscreen-page .auth-card__header-icon { display: none !important; }
         body.auth-fullscreen-page .auth-card .card-header, body.auth-fullscreen-page .auth-card .card-body { background: transparent !important; border: 0; padding: 0 !important; }
         body.auth-fullscreen-page .auth-card__header { margin-bottom: 20px; }
