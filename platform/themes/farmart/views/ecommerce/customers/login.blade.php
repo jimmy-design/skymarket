@@ -72,6 +72,7 @@
         body.auth-fullscreen-page .auth-card .form-label { color: #625c50; font-size: 12px; font-weight: 500; margin-bottom: 4px; }
         body.auth-fullscreen-page .auth-card .form-group { margin-bottom: 11px !important; }
         body.auth-fullscreen-page .auth-card form, body.auth-fullscreen-page .auth-card .form-group, body.auth-fullscreen-page .auth-card .position-relative { max-width: 100%; width: 100%; }
+        body.auth-fullscreen-page .auth-card form > * { box-sizing: border-box; max-width: none; width: 100%; }
         body.auth-fullscreen-page .auth-card .form-control { background: rgba(255,255,255,.86); border: 1px solid rgba(120,99,61,.12); border-radius: 22px; font-size: 13px; min-height: 42px; padding: 9px 16px; width: 100%; }
         body.auth-fullscreen-page .auth-card .form-control:focus { border-color: #e4ae3e; box-shadow: 0 0 0 3px rgba(228,174,62,.17) !important; }
         body.auth-fullscreen-page .auth-card .btn-auth-submit { background: linear-gradient(100deg, #ffdc68 0%, #ffc74c 100%); border: 0; border-radius: 24px; color: #35290e; font-size: 14px; font-weight: 650; min-height: 46px; width: 100%; }
