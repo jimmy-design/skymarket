@@ -10,6 +10,7 @@
     {!! Theme::header() !!}
 </head>
 <body id="page-auth" class="auth-fullscreen-page">
+    {!! Theme::partial('svg-icons') !!}
     <main class="auth-screen">
         <section class="auth-screen__form auth-screen__form--login">
             <a class="auth-brand" href="{{ route('public.index') }}" aria-label="{{ theme_option('site_title', config('app.name')) }}">
@@ -33,9 +34,9 @@
         html, body.auth-fullscreen-page { height: 100%; margin: 0; }
         body.auth-fullscreen-page { background: #fff8e9; color: #28251f; font-family: inherit; overflow: hidden; }
         body.auth-fullscreen-page > *:not(.auth-screen) { display: none !important; }
-        body.auth-fullscreen-page .auth-screen { align-items: stretch; background: linear-gradient(130deg, #fffdf7 0%, #fff4d6 48%, #ffe7b1 100%); border-radius: 32px; display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: calc(100vh - 20px); margin: 10px; min-height: 0; padding: 10px; }
-        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 540px; padding: 20px 30px; width: 100%; }
-        body.auth-fullscreen-page .auth-brand { align-items: center; color: #28251f; display: inline-flex; font-size: 18px; font-weight: 650; letter-spacing: -.04em; margin-bottom: 28px; text-decoration: none; }
+        body.auth-fullscreen-page .auth-screen { align-items: stretch; background: linear-gradient(145deg, #e8e9e9 0%, #f5f0df 48%, #fff0c9 100%); border-radius: 32px; display: grid; gap: 18px; grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); height: calc(100vh - 20px); margin: 10px; min-height: 0; padding: 10px; }
+        body.auth-fullscreen-page .auth-screen__form { align-self: center; justify-self: center; max-width: 540px; padding: 20px 42px; width: 100%; }
+        body.auth-fullscreen-page .auth-brand { align-items: center; border: 1px solid rgba(50,50,50,.25); border-radius: 999px; color: #28251f; display: inline-flex; font-size: 14px; font-weight: 550; letter-spacing: -.02em; margin-bottom: 44px; padding: 7px 16px; text-decoration: none; }
         body.auth-fullscreen-page .auth-brand img { max-height: 38px; max-width: 150px; object-fit: contain; }
         body.auth-fullscreen-page .auth-card { background: transparent !important; border: 0; border-radius: 0; box-shadow: none; margin: 0; overflow: visible; }
         body.auth-fullscreen-page .auth-card__banner, body.auth-fullscreen-page .auth-card__header-icon { display: none !important; }
@@ -49,6 +50,15 @@
         body.auth-fullscreen-page .auth-card .form-control { background: rgba(255,255,255,.86); border: 1px solid rgba(120,99,61,.12); border-radius: 22px; font-size: 13px; min-height: 42px; padding: 9px 16px; width: 100%; }
         body.auth-fullscreen-page .auth-card .form-control:focus { border-color: #e4ae3e; box-shadow: 0 0 0 3px rgba(228,174,62,.17) !important; }
         body.auth-fullscreen-page .auth-card .btn-auth-submit { background: linear-gradient(100deg, #ffdc68 0%, #ffc74c 100%); border: 0; border-radius: 24px; color: #35290e; font-size: 14px; font-weight: 650; min-height: 46px; width: 100%; }
+        body.auth-fullscreen-page .auth-screen__form--login .auth-card__header { text-align: center; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-container { margin-top: 15px; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-container .social-login-text { display: none; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content { display: flex; gap: 10px; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content .sl-button { align-items: center; background: rgba(255,255,255,.52); border: 1px solid rgba(92,77,49,.2); border-radius: 999px; box-shadow: none; color: #302d27; display: flex; flex: 1 1 0; justify-content: center; margin: 0 !important; min-height: 44px; padding: 4px 12px; text-decoration: none; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content .sl-button:hover { background: #fff; border-color: rgba(92,77,49,.38); }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content .sl-button-svg-container { padding: 4px; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content .sl-button-label-container { font-size: 12px; line-height: 1.2; margin: 0 4px; padding: 4px; }
+        body.auth-fullscreen-page .auth-screen__form--login .card-social-login-content svg { height: 19px; width: 19px; }
         body.auth-fullscreen-page .auth-card a { color: #976610; }
         body.auth-fullscreen-page .auth-screen__legal { color: #8d8679; font-size: 11px; margin: 20px 0 0; }
         body.auth-fullscreen-page .auth-screen__visual { background-color: #77766f; background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=90'); background-position: center; background-size: cover; border-radius: 30px; height: calc(100vh - 24px); min-height: 0; overflow: hidden; position: relative; }
